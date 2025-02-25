@@ -1,10 +1,9 @@
-import React from 'react';
+import Navbar from '../../components/Navbar'
 
-const Home: React.FC = () => {
+const Home = () => {
     return (
         <div>
-            <h1>Bienvenido a Proyecto Coffee</h1>
-            <p>Esta es la página de inicio del cliente.</p>
+            <Navbar />
         </div>
     );
 };
