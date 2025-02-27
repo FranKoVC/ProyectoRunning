@@ -31,20 +31,19 @@ const Navbar = () => {
             >
               <path
                 stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
                 d="M1 1h15M1 7h15M1 13h15"
               />
             </svg>
           </button>
-          <div className="hidden w-full md:block md:w-auto" id="navbar-default">
-            <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+          <div className="hidden w-full md:flex md:items-center md:justify-between md:w-auto" id="navbar-default">
+            <ul className="font-medium flex flex-col md:flex-row md:space-x-6 p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
               <li>
-                <a
+              <a
                   href="#"
-                  className="block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500"
-                  aria-current="page"
+                  className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
                 >
                   Inicio
                 </a>
@@ -82,6 +81,9 @@ const Navbar = () => {
                 </a>
               </li>
             </ul>
+            <button className="ml-6 px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-800">
+              Iniciar Sesión
+            </button>
           </div>
         </div>
       </nav>
@@ -90,3 +92,5 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+
