@@ -12,6 +12,7 @@ const Contacto = () => {
           </h2>
           <p className="text-sm text-gray-600 text-center">
             Déjanos tu mensaje y te responderemos lo antes posible.
+            IMAGINO QUE ES UNA BRRRRRRRRRROMA
           </p>
 
           <form className="space-y-4">
