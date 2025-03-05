@@ -16,13 +16,13 @@ const Menu: React.FC = () => {
           Cliente
         </button>
         <button
-          onClick={() => navigateTo("/empresa/dashboard")}
+          onClick={() => navigateTo("/empresa/eregistrovisita")}
           className="w-64 px-6 py-3 text-lg font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition duration-300"
         >
           Empresa
         </button>
         <button
-          onClick={() => navigateTo("/admin/dashboard")}
+          onClick={() => navigateTo("/admin/areportes")}
           className="w-64 px-6 py-3 text-lg font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition duration-300"
         >
           Administrador

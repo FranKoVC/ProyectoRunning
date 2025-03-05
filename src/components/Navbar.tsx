@@ -1,54 +1,113 @@
+import React, { useState } from "react";
 import logo from "../images/logo.png";
 import { Link } from "react-router-dom";
-import { useState } from "react";
 import { Menu, X } from "lucide-react";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [submenuVisible, setSubmenuVisible] = useState(false);
+  let timeoutId: number | null = null; // ✅ Corrección
+
+  const showSubmenu = () => {
+    if (timeoutId) clearTimeout(timeoutId);
+    setSubmenuVisible(true);
+  };
+
+  const hideSubmenu = () => {
+    timeoutId = window.setTimeout(() => {
+      setSubmenuVisible(false);
+    }, 500);
+  };
 
   return (
-    <nav className="bg-gradient-to-r from-orange-600 to-brown-800 shadow-md">
-      <div className="max-w-screen-xl flex items-center justify-between mx-auto p-4">
-        <Link to="/" className="flex items-center space-x-3">
-          <img src={logo} alt="Logo" className="h-12 w-auto" />
-          <span className="text-2xl font-bold text-white">Coffee & Running</span>
-        </Link>
-        
+    <nav className="bg-gradient-to-r from-[#e3d5ca] to-[#f8ebe6] py-4 px-8 shadow-md">
+      <div className="max-w-screen-xl mx-auto flex justify-between items-center">
+        <div className="flex items-center">
+          <img
+            src={logo}
+            alt="Coffee & Running"
+            className="h-10 mr-3 rounded-full"
+          />
+          <h1 className="text-xl font-bold text-gray-800">Coffee & Running</h1>
+        </div>
+
         <button
           onClick={() => setMenuOpen(!menuOpen)}
-          className="md:hidden text-white focus:outline-none"
+          className="md:hidden text-gray-800 focus:outline-none"
         >
           {menuOpen ? <X size={30} /> : <Menu size={30} />}
         </button>
 
-        <div
+        <ul
           className={`${
             menuOpen ? "flex" : "hidden"
-          } flex-col md:flex md:flex-row md:items-center md:space-x-6 bg-white md:bg-transparent absolute md:relative top-16 md:top-0 left-0 w-full md:w-auto p-5 md:p-0 shadow-md md:shadow-none`}
+          } flex-col md:flex md:flex-row md:items-center space-y-4 md:space-y-0 md:space-x-6 bg-white md:bg-transparent absolute md:relative top-16 md:top-0 left-0 w-full md:w-auto p-5 md:p-0 shadow-md md:shadow-none`}
         >
-          {[
-            { name: "Inicio", path: "/cliente/home" },
-            { name: "Sobre Nosotros", path: "/cliente/home/sobre-nosotros" },
-            { name: "Beneficios", path: "/cliente/home/beneficios" },
-            { name: "Planes", path: "/cliente/home/planes" },
-            { name: "Contacto", path: "/cliente/home/contacto" },
-          ].map((item) => (
-            <Link
-              key={item.name}
-              to={item.path}
-              className="block py-2 px-3 text-gray-900 md:text-white hover:text-orange-300 transition"
-            >
-              {item.name}
+          <li>
+            <Link to="/cliente/home" className="nav-link">
+              Inicio
             </Link>
-          ))}
-          
-          <Link
-            to="/login"
-            className="ml-6 px-5 py-2 text-white bg-orange-700 rounded-full hover:bg-orange-800 transition"
+          </li>
+          <li>
+            <Link to="/cliente/home/sobre-nosotros" className="nav-link">
+              Sobre Nosotros
+            </Link>
+          </li>
+          <li>
+            <Link to="/cliente/home/beneficios" className="nav-link">
+              Beneficios
+            </Link>
+          </li>
+          <li>
+            <Link to="/cliente/home/planes" className="nav-link">
+              Planes
+            </Link>
+          </li>
+          <li>
+            <Link to="/cliente/home/contacto" className="nav-link">
+              Contacto
+            </Link>
+          </li>
+
+          <li 
+            className="relative"
+            onMouseEnter={showSubmenu}
+            onMouseLeave={hideSubmenu}
           >
-            Iniciar Sesión
-          </Link>
-        </div>
+            <button className="nav-link flex items-center gap-2">
+              Gestión Club
+            </button>
+            {submenuVisible && (
+              <ul className="absolute left-0 mt-2 mt-1 bg-white shadow-lg rounded-lg w-52 border border-gray-200 transition-all duration-300 ease-in-out z-50">
+                <li>
+                  <Link
+                    to="/empresa/eregistrovisita"
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-all duration-200"
+                  >
+                    Registro de Visita
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/admin/areportes"
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-all duration-200"
+                  >
+                    Reportes
+                  </Link>
+                </li>
+              </ul>
+            )}
+          </li>
+
+          <li>
+            <Link
+              to="/login"
+              className="ml-6 px-5 py-2 text-white bg-[#c98e7a] rounded-lg hover:bg-[#a9715f] transition-all duration-300"
+            >
+              Iniciar Sesión
+            </Link>
+          </li>
+        </ul>
       </div>
     </nav>
   );

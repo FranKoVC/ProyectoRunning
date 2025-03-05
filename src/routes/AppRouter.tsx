@@ -1,20 +1,20 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import AdminDashboard from "../pages/Admin/Dashboard";
+import AReportes from "../pages/Admin/Reportes";
 import ClienteHome from "../pages/Cliente/Home";
 import ClienteContacto from "../pages/Cliente/Contacto";
 import ClienteBeneficios from "../pages/Cliente/Beneficios";
 import ClientePlanes from "../pages/Cliente/Planes";
 import ClienteSNosotros from "../pages/Cliente/SobreNosotros";
 
-import EmpresaDashboard from "../pages/Empresa/Dashboard";
-import Menu from "../pages/Menu";
+import ERegistroVisita from "../pages/Empresa/RegistroVisitas";
+import Menu from "../pages/Dashboard";
 
 const AppRouter = () => {
   return (
     <Router>
       <Routes>
         {/* Rutas para Administrador */}
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/admin/areportes" element={<AReportes />} />
 
         {/* Rutas para Cliente */}
         <Route path="/cliente/home" element={<ClienteHome />} />
@@ -24,7 +24,7 @@ const AppRouter = () => {
         <Route path="/cliente/home/sobre-nosotros" element={<ClienteSNosotros />} />
 
         {/* Rutas para Empresa */}
-        <Route path="/empresa/dashboard" element={<EmpresaDashboard />} />
+        <Route path="/empresa/eregistrovisita" element={<ERegistroVisita />} />
 
         {/* Ruta por defecto */}
         <Route path="*" element={<Menu/>} />
