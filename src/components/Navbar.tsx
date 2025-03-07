@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import logo from "../images/logo.png";
 import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
@@ -20,7 +20,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-gradient-to-r from-[#e3d5ca] to-[#f8ebe6] py-4 px-8 shadow-md">
+    <nav className="bg-gradient-to-r from-[#d6c6b8] to-[#e9dbd2] py-4 px-8 shadow-md">
       <div className="max-w-screen-xl mx-auto flex justify-between items-center">
         <div className="flex items-center">
           <img
@@ -28,7 +28,7 @@ const Navbar = () => {
             alt="Coffee & Running"
             className="h-10 mr-3 rounded-full"
           />
-          <h1 className="text-xl font-bold text-gray-800">Coffee & Running</h1>
+          <h1 className="text-xl font-bold text-gray-800">Coffee & Running Club</h1>
         </div>
 
         <button
@@ -78,7 +78,7 @@ const Navbar = () => {
               Gestión Club
             </button>
             {submenuVisible && (
-              <ul className="absolute left-0 mt-2 mt-1 bg-white shadow-lg rounded-lg w-52 border border-gray-200 transition-all duration-300 ease-in-out z-50">
+              <ul className="absolute left-0 mt-2 bg-white shadow-lg rounded-lg w-52 border border-gray-200 transition-all duration-300 ease-in-out z-50">
                 <li>
                   <Link
                     to="/empresa/eregistrovisita"

@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
-import { FaUsers, FaLightbulb, FaStar, FaHandshake } from "react-icons/fa";
+import { FaLightbulb, FaStar, FaHandshake } from "react-icons/fa";
 import "animate.css/animate.min.css";
 
 import historiaImg from "../../images/1sn.jpeg";

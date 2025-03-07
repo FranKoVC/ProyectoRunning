@@ -5,6 +5,7 @@ import ClienteContacto from "../pages/Cliente/Contacto";
 import ClienteBeneficios from "../pages/Cliente/Beneficios";
 import ClientePlanes from "../pages/Cliente/Planes";
 import ClienteSNosotros from "../pages/Cliente/SobreNosotros";
+import ClienteRegistro from "../pages/Cliente/Registro";
 
 import ERegistroVisita from "../pages/Empresa/RegistroVisitas";
 import Menu from "../pages/Dashboard";
@@ -22,6 +23,7 @@ const AppRouter = () => {
         <Route path="/cliente/home/beneficios" element={<ClienteBeneficios />} />
         <Route path="/cliente/home/planes" element={<ClientePlanes />} />
         <Route path="/cliente/home/sobre-nosotros" element={<ClienteSNosotros />} />
+        <Route path="/cliente/home/registro" element={<ClienteRegistro />} />
 
         {/* Rutas para Empresa */}
         <Route path="/empresa/eregistrovisita" element={<ERegistroVisita />} />

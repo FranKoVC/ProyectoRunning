@@ -9,8 +9,10 @@ const Beneficio = () => {
     <div>
       <Navbar />
       <div className="mt-12 grid grid-cols-3 gap-6 max-w-6xl mx-auto">
-        <div className="relative text-white p-8 rounded-xl flex flex-col justify-between bg-cover bg-center h-48"
-          style={{ backgroundImage: `url(${dulcinelly})` }}>
+        <div
+          className="relative text-white p-8 rounded-xl flex flex-col justify-between bg-cover bg-center h-48"
+          style={{ backgroundImage: `url(${dulcinelly})` }}
+        >
           <h2 className="text-2xl font-extrabold">DESCUENTO</h2>
           <p className="text-4xl font-extrabold">10%</p>
           <p className="text-lg font-extrabold">DULCINELLY</p>
