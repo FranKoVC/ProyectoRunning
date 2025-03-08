@@ -20,7 +20,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-gradient-to-r from-[#d6c6b8] to-[#e9dbd2] py-4 px-8 shadow-md">
+    <nav className="bg-gradient-to-r from-[#d6c6b8] to-[#e9dbd2] py-4 px-8 border-b-4 border-[#b07d67] shadow-md">
       <div className="max-w-screen-xl mx-auto flex justify-between items-center">
         <div className="flex items-center">
           <img

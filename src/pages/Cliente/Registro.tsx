@@ -84,17 +84,17 @@ const Registro = () => {
                         <input
                           type="text"
                           placeholder={`Ingrese su ${tipoDocumento}`}
-                          className="w-full p-3 border border-white rounded-md"
+                          className="w-full p-3 bg-white border border-white rounded-md"
                           value={documento}
                           onChange={(e) => setDocumento(e.target.value)}
                         />
                       )}
-                      <input type="text" placeholder="Nombres" className="w-full p-3 border border-white rounded-md" />
-                      <input type="text" placeholder="Apellidos" className="w-full p-3 border border-white rounded-md" />
-                      <input type="text" placeholder="Celular" className="w-full p-3 border border-white rounded-md" />
-                      <input type="email" placeholder="Correo Electrónico" className="w-full p-3 border border-white rounded-md" />
+                      <input type="text" placeholder="Nombres" className="w-full p-3 bg-white border border-white rounded-md" />
+                      <input type="text" placeholder="Apellidos" className="w-full p-3 bg-white border border-white rounded-md" />
+                      <input type="text" placeholder="Celular" className="w-full p-3 bg-white border border-white rounded-md" />
+                      <input type="email" placeholder="Correo Electrónico" className="w-full p-3 bg-white border border-white rounded-md" />
                       <label className="text-[#922D26] font-medium">Fecha de Nacimiento</label>
-                      <input type="date" placeholder="Fecha de Nacimiento" className="w-full p-3 border border-white rounded-md" />
+                      <input type="date" placeholder="Fecha de Nacimiento" className="w-full p-3 bg-white border border-white rounded-md" />
                     </>
                   )}
 
