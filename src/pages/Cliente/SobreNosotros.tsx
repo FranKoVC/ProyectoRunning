@@ -12,7 +12,7 @@ const SobreNosotros: React.FC = () => {
       <Navbar />
       
       {/* Hero Section */}
-      <div className="relative bg-cover bg-center h-[400px] flex items-center justify-center text-white text-center" style={{ backgroundImage: "url('/images/sobre-nosotros-hero.jpg')" }}>
+      <div className="relative bg-cover bg-center h-[250px] flex items-center justify-center text-white text-center" style={{ backgroundImage: "url('/images/sobre-nosotros-hero.jpg')" }}>
         <div className="bg-black bg-opacity-50 p-8 rounded-xl animate__animated animate__fadeIn">
           <h1 className="text-5xl font-bold">Sobre Nosotros</h1>
           <p className="mt-3 text-lg max-w-2xl mx-auto">
@@ -22,7 +22,7 @@ const SobreNosotros: React.FC = () => {
       </div>
 
       {/* Nuestra Historia */}
-      <section className="py-16 px-6 lg:flex items-center max-w-6xl mx-auto">
+      <section className="py-4 px-6 lg:flex items-center max-w-6xl mx-auto">
         <img
           src={historiaImg}
           alt="Nuestra Historia"
