@@ -1,12 +1,13 @@
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
+import { FaWhatsapp } from "react-icons/fa";
 
 const Contacto = () => {
   return (
     <div>
       <Navbar />
-      <div className="flex flex-col items-center justify-center min-h-screen py-6 bg-gradient-to-b from-gray-100 to-gray-300">
-        <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-2xl shadow-lg">
+      <div className="flex flex-col items-center justify-center min-h-screen py-4 bg-gradient-to-b from-gray-100 to-gray-300">
+        <div className="w-full max-w-md p-6 space-y-4 bg-white rounded-2xl shadow-lg">
           <h2 className="text-3xl font-bold text-center text-gray-800">
             Contacto
           </h2>
@@ -14,7 +15,7 @@ const Contacto = () => {
             Déjanos tu mensaje y te responderemos lo antes posible.
           </p>
 
-          <form className="space-y-4">
+          <form className="space-y-3">
             <div>
               <label
                 htmlFor="name"
@@ -28,7 +29,7 @@ const Contacto = () => {
                 name="name"
                 placeholder="Tu nombre"
                 required
-                className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+                className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
               />
             </div>
 
@@ -45,7 +46,7 @@ const Contacto = () => {
                 name="email"
                 placeholder="tucorreo@example.com"
                 required
-                className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+                className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
               />
             </div>
 
@@ -59,10 +60,10 @@ const Contacto = () => {
               <textarea
                 id="message"
                 name="message"
-                rows={4}
+                rows={3}
                 placeholder="Escribe tu mensaje aquí..."
                 required
-                className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+                className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
               ></textarea>
             </div>
 
@@ -75,9 +76,20 @@ const Contacto = () => {
               </button>
             </div>
           </form>
+
+          <div className="text-center mt-4">
+            <p className="text-sm text-gray-700">¿Quieres unirte a nuestro grupo?</p>
+            <a
+              href="https://chat.whatsapp.com/tu-enlace-de-invitacion"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 text-green-600 font-semibold hover:underline"
+            >
+              <FaWhatsapp className="text-2xl" /> Únete a nuestro grupo de WhatsApp
+            </a>
+          </div>
         </div>
       </div>
-
       <Footer />
     </div>
   );

@@ -14,7 +14,7 @@ const Registro = () => {
       <Navbar />
 
       <main className="flex-grow flex items-center justify-center bg-gray-100 p-4">
-        <div className="w-full max-w-5xl bg-white rounded-2xl overflow-hidden shadow-lg flex">
+        <div className="w-full max-w-6xl bg-white rounded-2xl overflow-hidden shadow-lg flex">
           {/* Lado Izquierdo - Formulario */}
           <div className="w-1/2 bg-[#FDF6E6] flex flex-col items-center justify-center p-10">
             <h1 className="text-4xl font-bold text-[#922D26]">Registra tus datos</h1>
@@ -108,7 +108,7 @@ const Registro = () => {
                       <label className="text-[#922D26] font-medium">Vigencia del contrato</label>
                       <input type="date" placeholder="Vigencia del Contrato1" className="w-full p-3 border border-white rounded-md" />
                       <input type="date" placeholder="Vigencia del Contrato2" className="w-full p-3 border border-white rounded-md" />
-                      <input type="number" placeholder="Porcentaje de Descuento" className="w-full p-3 border border-white rounded-md" />
+                      <input type="number" placeholder="Porcentaje de Descuento (%)" className="w-full p-3 border border-white rounded-md" />
                       <input type="text" placeholder="Ciudad" className="w-full p-3 border border-white rounded-md" />
                       <label className="text-[#922D26] font-medium">Selecciona un Plan</label>
                       <div className="flex gap-4">
