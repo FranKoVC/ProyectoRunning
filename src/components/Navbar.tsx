@@ -45,7 +45,7 @@ const Navbar = () => {
         >
           <li>
             <Link to="/cliente/home" className="nav-link">
-              Inicio que tal
+              Inicio
             </Link>
           </li>
           <li>
