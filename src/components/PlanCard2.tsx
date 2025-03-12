@@ -24,9 +24,6 @@ const PlanCard: React.FC<PlanCardProps> = ({ title, price, duration, benefits })
         ))}
       </ul>
 
-      <button className="mt-4 bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-2 px-4 rounded-lg w-full transition-colors">
-        Adquirir plan
-      </button>
     </div>
   );
 };

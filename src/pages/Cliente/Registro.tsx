@@ -2,6 +2,7 @@ import { useState } from "react";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import registroImg from "../../images/1sn.jpeg";
+import { Link } from "react-router-dom";
 
 const Registro = () => {
   const [tipoUsuario, setTipoUsuario] = useState("");
@@ -47,27 +48,6 @@ const Registro = () => {
                   {/* Formulario para Cliente */}
                   {tipoUsuario === "cliente" && (
                     <>
-                      <label className="text-[#922D26] font-medium">Selecciona un Plan</label>
-                      <div className="flex gap-4">
-                        <button
-                          type="button"
-                          onClick={() => setPlan("Oro")}
-                          className={`w-1/2 py-2 border border-white rounded-md text-lg ${
-                            plan === "Oro" ? "bg-yellow-500 text-white" : "bg-white border-gray-300 hover:bg-gray-200"
-                          }`}
-                        >
-                          Oro
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setPlan("Plata")}
-                          className={`w-1/2 py-2 border border-white rounded-md text-lg ${
-                            plan === "Plata" ? "bg-gray-400 text-white" : "bg-white border-gray-300 hover:bg-gray-200"
-                          }`}
-                        >
-                          Plata
-                        </button>
-                      </div>
 
                       <label className="text-[#922D26] font-medium">Tipo de Documento</label>
                       <select
@@ -92,6 +72,7 @@ const Registro = () => {
                       <input type="text" placeholder="Nombres" className="w-full p-3 bg-white border border-white rounded-md" />
                       <input type="text" placeholder="Apellidos" className="w-full p-3 bg-white border border-white rounded-md" />
                       <input type="text" placeholder="Celular" className="w-full p-3 bg-white border border-white rounded-md" />
+                      <input type="text" placeholder="Dirección" className="w-full p-3 bg-white border border-white rounded-md" />
                       <input type="email" placeholder="Correo Electrónico" className="w-full p-3 bg-white border border-white rounded-md" />
                       <label className="text-[#922D26] font-medium">Fecha de Nacimiento</label>
                       <input type="date" placeholder="Fecha de Nacimiento" className="w-full p-3 bg-white border border-white rounded-md" />
@@ -101,15 +82,15 @@ const Registro = () => {
                   {/* Formulario para Empresa */}
                   {tipoUsuario === "empresa" && (
                     <>
-                      <input type="text" placeholder="RUC" className="w-full p-3 border border-white rounded-md" />
-                      <input type="text" placeholder="Razón Social" className="w-full p-3 border border-white rounded-md" />
-                      <input type="text" placeholder="Contacto" className="w-full p-3 border border-white rounded-md" />
-                      <input type="text" placeholder="Celular" className="w-full p-3 border border-white rounded-md" />
+                      <input type="text" placeholder="RUC" className="w-full p-3 bg-white border border-white rounded-md" />
+                      <input type="text" placeholder="Razón Social" className="w-full p-3 bg-white border border-white rounded-md" />
+                      <input type="text" placeholder="Contacto" className="w-full p-3 bg-white border border-white rounded-md" />
+                      <input type="text" placeholder="Celular" className="w-full p-3 bg-white border border-white rounded-md" />
                       <label className="text-[#922D26] font-medium">Vigencia del contrato</label>
-                      <input type="date" placeholder="Vigencia del Contrato1" className="w-full p-3 border border-white rounded-md" />
-                      <input type="date" placeholder="Vigencia del Contrato2" className="w-full p-3 border border-white rounded-md" />
-                      <input type="number" placeholder="Porcentaje de Descuento (%)" className="w-full p-3 border border-white rounded-md" />
-                      <input type="text" placeholder="Ciudad" className="w-full p-3 border border-white rounded-md" />
+                      <input type="date" placeholder="Vigencia del Contrato1" className="w-full p-3 bg-white border border-white rounded-md" />
+                      <input type="date" placeholder="Vigencia del Contrato2" className="w-full p-3 bg-white border border-white rounded-md" />
+                      <input type="number" placeholder="Porcentaje de Descuento (%)" className="w-full p-3 bg-white border border-white rounded-md" />
+                      <input type="text" placeholder="Ciudad" className="w-full p-3 bg-white border border-white rounded-md" />
                       <label className="text-[#922D26] font-medium">Selecciona un Plan</label>
                       <div className="flex gap-4">
                         <button
@@ -135,7 +116,7 @@ const Registro = () => {
                   )}
 
                   <button type="submit" className="w-full bg-[#922D26] text-white py-3 rounded-md font-bold mt-4 hover:bg-[#7a2520]">
-                    Registrarse
+                    <Link to="/cliente/home/pago">Siguiente</Link>
                   </button>
                 </form>
               </div>
