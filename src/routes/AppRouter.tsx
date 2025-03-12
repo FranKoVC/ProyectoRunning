@@ -8,6 +8,7 @@ import ClienteSNosotros from "../pages/Cliente/SobreNosotros";
 import ClienteRegistro from "../pages/Cliente/Registro";
 import DetalleBeneficio from "../pages/Cliente/DetalleBeneficio";
 import ClientePago from "../pages/Cliente/PagoVoucher";
+import ClienteInfo from "../pages/Cliente/InfoCliente"
 
 import ERegistroVisita from "../pages/Empresa/RegistroVisitas";
 import Menu from "../pages/Dashboard";
@@ -28,6 +29,7 @@ const AppRouter = () => {
         <Route path="/cliente/home/sobre-nosotros" element={<ClienteSNosotros />} />
         <Route path="/cliente/home/registro" element={<ClienteRegistro />} />
         <Route path="/cliente/home/pago" element={<ClientePago />} />
+        <Route path="/cliente/home/clienteinformacion" element={<ClienteInfo />} />
 
         {/* Rutas para Empresa */}
         <Route path="/empresa/eregistrovisita" element={<ERegistroVisita />} />

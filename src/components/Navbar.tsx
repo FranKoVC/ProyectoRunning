@@ -95,6 +95,14 @@ const Navbar = () => {
                     Reportes
                   </Link>
                 </li>
+                <li>
+                  <Link
+                    to="/cliente/home/clienteinformacion"
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-all duration-200"
+                  >
+                    Cliente
+                  </Link>
+                </li>
               </ul>
             )}
           </li>
