@@ -58,6 +58,12 @@ const PagoVoucher = () => {
     setPreview(null);
   };
 
+  const registrarPago = () => {
+    if(!planSeleccionado || !voucher || !numeroOperacion) return;
+    alert(`Voucher de pago enviado para validación`);
+    setPlanSeleccionado("");
+  }
+
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
@@ -134,7 +140,7 @@ const PagoVoucher = () => {
             <p className="text-lg font-semibold text-[#922D26]">Periodo de vigencia: {calcularVigencia()}</p>
           </div>
 
-          <button className="w-full bg-[#922D26] text-white py-3 rounded-md font-bold mt-6 hover:bg-[#7a2520]">
+          <button onClick={registrarPago} className="w-full bg-[#922D26] text-white py-3 rounded-md font-bold mt-6 hover:bg-[#7a2520]">
             Confirmar Pago
           </button>
         </div>
