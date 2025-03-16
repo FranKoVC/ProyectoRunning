@@ -8,14 +8,14 @@ const planes = [
   {
     title: "Plan Oro",
     price: 49,
-    duration: "1 mes",
+    duration: "3 meses",
     benefits: ["Soporte 24/7", "Acceso a contenido exclusivo", "Descuentos en eventos"],
     months: 1,
   },
   {
     title: "Plan Plata",
     price: 29,
-    duration: "3 meses",
+    duration: "1 mes",
     benefits: ["Acceso a contenido exclusivo", "Descuentos en eventos", "15% descuento en cafeterías"],
     months: 3,
   },
@@ -24,6 +24,7 @@ const planes = [
 const PagoVoucher = () => {
   const [planSeleccionado, setPlanSeleccionado] = useState<string>("");
   const [numeroOperacion, setNumeroOperacion] = useState("");
+  const [tipoPago, setTipoPagoState] = useState<string>("");
   const [voucher, setVoucher] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
 
@@ -64,10 +65,11 @@ const PagoVoucher = () => {
     setPlanSeleccionado("");
   }
 
+
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
-      <main className="flex-grow flex items-center justify-center bg-gray-100 p-4">
+      <main className="flex-grow flex items-center justify-center bg-gray-100 p-6">
         <div className="w-full max-w-4xl bg-white rounded-2xl shadow-lg p-10">
           <h1 className="text-3xl font-bold text-[#922D26] text-center">Selecciona tu Plan</h1>
           
@@ -91,6 +93,19 @@ const PagoVoucher = () => {
                 </button>
               </div>
             ))}
+          </div>
+          <div className="mt-6">
+          <label className="block text-[#922D26] font-medium mb-2">Tipo de pago</label>
+          <select
+            className="w-full p-3 border border-gray-300 rounded-md"
+            value={tipoPago}
+            onChange={(e) => setTipoPagoState(e.target.value)}
+          >
+            <option value="">Seleccione el tipo de pago</option>
+            <option value="Yape">Yape</option>
+            <option value="Plin">Plin</option>
+            <option value="Transferencia">Transferencia</option>
+          </select>
           </div>
 
           <div className="mt-6">
@@ -124,6 +139,15 @@ const PagoVoucher = () => {
               </div>
             )}
           </div>
+        <div className="mt-6">
+            <label className="block text-[#922D26] font-medium mb-2">Fecha de Pago</label>
+            <input
+              type="date"
+              className="w-full p-3 border border-gray-300 rounded-md"
+              value={new Date().toISOString().split("T")[0]}
+              onChange={(e) => console.log(e.target.value)}
+            />
+        </div>
 
           <div className="mt-6">
             <label className="block text-[#922D26] font-medium mb-2">N° de Operación</label>

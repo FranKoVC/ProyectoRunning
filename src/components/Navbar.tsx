@@ -5,18 +5,31 @@ import { Menu, X } from "lucide-react";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [submenuVisible, setSubmenuVisible] = useState(false);
-  let timeoutId: number | null = null; // ✅ Corrección
+  const [adminSubmenuVisible, setAdminSubmenuVisible] = useState(false);
+  const [empresaSubmenuVisible, setEmpresaSubmenuVisible] = useState(false);
+  let adminTimeoutId: number | null | undefined = null;
+  let empresaTimeoutId: number | null | undefined = null;
 
-  const showSubmenu = () => {
-    if (timeoutId) clearTimeout(timeoutId);
-    setSubmenuVisible(true);
+  const showAdminSubmenu = () => {
+    if (adminTimeoutId) clearTimeout(adminTimeoutId);
+    setAdminSubmenuVisible(true);
   };
 
-  const hideSubmenu = () => {
-    timeoutId = window.setTimeout(() => {
-      setSubmenuVisible(false);
-    }, 500);
+  const hideAdminSubmenu = () => {
+    adminTimeoutId = window.setTimeout(() => {
+      setAdminSubmenuVisible(false);
+    }, 200); // Reducido de 500ms a 200ms
+  };
+
+  const showEmpresaSubmenu = () => {
+    if (empresaTimeoutId) clearTimeout(empresaTimeoutId);
+    setEmpresaSubmenuVisible(true);
+  };
+
+  const hideEmpresaSubmenu = () => {
+    empresaTimeoutId = window.setTimeout(() => {
+      setEmpresaSubmenuVisible(false);
+    }, 200); // Reducido de 500ms a 200ms
   };
 
   return (
@@ -28,7 +41,9 @@ const Navbar = () => {
             alt="Coffee & Running"
             className="h-10 mr-3 rounded-full"
           />
-          <h1 className="text-xl font-bold text-gray-800">Coffee & Running Club</h1>
+          <h1 className="text-xl font-bold text-gray-800">
+            Coffee & Running Club
+          </h1>
         </div>
 
         <button
@@ -68,16 +83,53 @@ const Navbar = () => {
               Contacto
             </Link>
           </li>
+          <li>
+            <Link to="/cliente/home/clienteinformacion" className="nav-link">
+              Mi cuenta
+            </Link>
+          </li>
 
-          <li 
+          {/* Gestión Admin */}
+          <li
             className="relative"
-            onMouseEnter={showSubmenu}
-            onMouseLeave={hideSubmenu}
+            onMouseEnter={showAdminSubmenu}
+            onMouseLeave={hideAdminSubmenu}
           >
             <button className="nav-link flex items-center gap-2">
-              Gestión Club
+              Gestión Admin
             </button>
-            {submenuVisible && (
+            {adminSubmenuVisible && (
+              <ul className="absolute left-0 mt-2 bg-white shadow-lg rounded-lg w-52 border border-gray-200 transition-all duration-300 ease-in-out z-50">
+                <li>
+                  <Link
+                    to="/admin/areportes"
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-all duration-200"
+                  >
+                    Reportes
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/admin/aregistroempresa"
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-all duration-200"
+                  >
+                    Registro de Empresa
+                  </Link>
+                </li>
+              </ul>
+            )}
+          </li>
+
+          {/* Gestión Empresa */}
+          <li
+            className="relative"
+            onMouseEnter={showEmpresaSubmenu}
+            onMouseLeave={hideEmpresaSubmenu}
+          >
+            <button className="nav-link flex items-center gap-2">
+              Gestión Empresa
+            </button>
+            {empresaSubmenuVisible && (
               <ul className="absolute left-0 mt-2 bg-white shadow-lg rounded-lg w-52 border border-gray-200 transition-all duration-300 ease-in-out z-50">
                 <li>
                   <Link
@@ -89,18 +141,10 @@ const Navbar = () => {
                 </li>
                 <li>
                   <Link
-                    to="/admin/areportes"
+                    to="/empresa/egestorbeneficio"
                     className="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-all duration-200"
                   >
-                    Reportes
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/cliente/home/clienteinformacion"
-                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-all duration-200"
-                  >
-                    Cliente
+                    Gestor de Beneficios
                   </Link>
                 </li>
                 <li>
