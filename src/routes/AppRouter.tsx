@@ -1,5 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 import AReportes from "../pages/Admin/Reportes";
+import ARegistroEmpresa from "../pages/Admin/RegistroEmpresa";
+
 import ClienteHome from "../pages/Cliente/Home";
 import ClienteContacto from "../pages/Cliente/Contacto";
 import ClienteBeneficios from "../pages/Cliente/Beneficios";
@@ -11,6 +14,8 @@ import ClientePago from "../pages/Cliente/PagoVoucher";
 import ClienteInfo from "../pages/Cliente/InfoCliente"
 
 import ERegistroVisita from "../pages/Empresa/RegistroVisitas";
+import EGestorBeneficio from "../pages/Empresa/GestorBeneficios";
+
 import Menu from "../pages/Dashboard";
 
 const AppRouter = () => {
@@ -19,6 +24,7 @@ const AppRouter = () => {
       <Routes>
         {/* Rutas para Administrador */}
         <Route path="/admin/areportes" element={<AReportes />} />
+        <Route path="/admin/aregistroempresa" element={<ARegistroEmpresa />} />
 
         {/* Rutas para Cliente */}
         <Route path="/cliente/home" element={<ClienteHome />} />
@@ -33,6 +39,7 @@ const AppRouter = () => {
 
         {/* Rutas para Empresa */}
         <Route path="/empresa/eregistrovisita" element={<ERegistroVisita />} />
+        <Route path="/empresa/egestorbeneficio" element={<EGestorBeneficio />} />
 
         {/* Ruta por defecto */}
         <Route path="*" element={<Menu/>} />

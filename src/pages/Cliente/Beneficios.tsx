@@ -62,7 +62,7 @@ const Beneficio = () => {
                 <h3 className="text-lg font-bold">{beneficio.nombre}</h3>
                 <h4 className="text-md font-bold">{beneficio.categoria}</h4>
                 <button
-                  className="mt-3 bg-red-500 text-white px-3 py-2 rounded transition-all duration-300 hover:bg-red-600 active:scale-95"
+                  className="mt-3 bg-red-700 text-white px-3 py-2 rounded transition-all duration-300 hover:bg-red-600 active:scale-95"
                   onClick={() => navigate(beneficio.ruta)}
                 >
                   Ver beneficio →
