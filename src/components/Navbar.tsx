@@ -116,6 +116,14 @@ const Navbar = () => {
                     Registro de Empresa
                   </Link>
                 </li>
+                <li>
+                  <Link
+                    to="/admin/planes"
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-all duration-200"
+                  >
+                    RegistroPlan
+                  </Link>
+                </li>
               </ul>
             )}
           </li>
@@ -147,14 +155,7 @@ const Navbar = () => {
                     Gestor de Beneficios
                   </Link>
                 </li>
-                <li>
-                  <Link
-                    to="/admin/planes"
-                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-all duration-200"
-                  >
-                    RegistroPlan
-                  </Link>
-                </li>
+                
               </ul>
             )}
           </li>
