@@ -4,8 +4,18 @@ import { Link } from "react-router-dom";
 import img1 from "../images/img1.jpg";
 import img2 from "../images/img2.png";
 import img3 from "../images/img3.png";
+import logo1 from "../images/logo1.png";
+import logo2 from "../images/logo2.png";
+import logo3 from "../images/logo3.jpg";
+import logo4 from "../images/logo4.png";
+import logo5 from "../images/logo5.png";
+import logo6 from "../images/logo6.png";
+import logo7 from "../images/logo7.png";
+import logo8 from "../images/logo8.png";
+import logo9 from "../images/logo9.png";
 
 const images = [img1, img2, img3];
+const logos = [logo1, logo2, logo3, logo4, logo5, logo6, logo7, logo8, logo9];
 
 const Inicio = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -19,12 +29,12 @@ const Inicio = () => {
   }, []);
 
   return (
-    <div className="relative w-full flex items-center justify-center px-4 md:px-8 bg-[#F7F3E9] pt-8 pb-8">
+    <div className="relative w-full flex flex-col items-center justify-center px-4 md:px-8 bg-[#F7F3E9] pt-8 pb-8">
       <div className="relative w-full max-w-7xl bg-gradient-to-r from-[#E6D6C8] via-[#D6BBA0] to-[#A67C52] bg-opacity-80 rounded-3xl p-6 md:p-12 shadow-lg overflow-hidden">
         <div className="relative flex flex-col md:flex-row gap-16">
           <div className="w-full md:w-1/2 flex flex-col justify-center space-y-8">
             <h1 className="text-4xl md:text-6xl font-extrabold text-[#4F4A45] leading-tight">
-              Bienvenido a{" "}
+              Bienvenido a {" "}
               <span className="text-[#A67C52]">Coffee & Running</span>:<br />
               Energía, Pasión y Comunidad
             </h1>
@@ -33,12 +43,12 @@ const Inicio = () => {
               para impulsar tu día. Vive experiencias únicas, comparte con
               corredores apasionados y disfruta de beneficios exclusivos.
             </p>
-            <div className="flex flex-col md:flex-row items-center mt-6 space-y-6 md:space-y-0 md:space-x-6">
-              <button className="bg-[#A67C52] hover:bg-[#8B6B45] text-white font-bold py-4 px-6 rounded-full flex items-center shadow-md transition-all duration-300">
-                <Link
-                  to="/cliente/home/registro"
-                  className="flex items-center w-full whitespace-nowrap"
-                >
+            <div className="flex md:flex-row w-full items-center mt-6 space-y-6 md:space-y-0 md:space-x-6">
+              <Link
+                to="/cliente/home/registro"
+                className="flex items-center whitespace-nowrap"
+              >
+                <button className="bg-[#A67C52] hover:bg-[#8B6B45] text-white font-bold py-4 px-6 rounded-full flex items-center shadow-md transition-all duration-300">
                   Únete ahora
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -52,9 +62,8 @@ const Inicio = () => {
                       clipRule="evenodd"
                     />
                   </svg>
-                </Link>
-              </button>
-
+                </button>
+              </Link>
               <p className="text-2xl font-bold text-[#A67C52] text-center md:text-left">
                 ¡Ya somos más de 100 miembros!
               </p>
@@ -95,6 +104,20 @@ const Inicio = () => {
               ))}
             </div>
           </div>
+        </div>
+      </div>
+      
+      <h2 className="text-3xl font-bold text-[#4F4A45] mt-12">Empresas asociadas</h2>
+      <div className="w-full overflow-hidden mt-6">
+        <div className="flex space-x-8 animate-scroll">
+          {logos.map((logo, index) => (
+            <img
+              key={index}
+              src={logo}
+              alt={`Logo ${index + 1}`}
+              className="h-20 w-auto object-contain"
+            />
+          ))}
         </div>
       </div>
     </div>
