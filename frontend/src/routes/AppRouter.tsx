@@ -18,6 +18,9 @@ import ClienteInfo from "../pages/Cliente/InfoCliente"
 import ERegistroVisita from "../pages/Empresa/RegistroVisitas";
 import EGestorBeneficio from "../pages/Empresa/GestorBeneficios";
 
+
+import Login from "../pages/Auth/Login";
+
 import Menu from "../pages/Dashboard";
 
 const AppRouter = () => {
@@ -47,6 +50,12 @@ const AppRouter = () => {
         {/* Rutas para Empresa */}
         <Route path="/empresa/eregistrovisita" element={<ERegistroVisita />} />
         <Route path="/empresa/egestorbeneficio" element={<EGestorBeneficio />} />
+
+
+
+        {/* Rutas para Autenticación */}
+        <Route path="/login" element={<Login />} />
+        
 
         {/* Ruta por defecto */}
         <Route path="*" element={<Menu/>} />
