@@ -106,16 +106,19 @@ const Inicio = () => {
           </div>
         </div>
       </div>
-      
-      <h2 className="text-3xl font-bold text-[#4F4A45] mt-12">Empresas asociadas</h2>
-      <div className="w-full overflow-hidden mt-6">
-        <div className="flex space-x-8 animate-scroll">
-          {logos.map((logo, index) => (
+
+      <h2 className="text-3xl font-bold text-[#4F4A45] mt-12">
+        Empresas asociadas
+      </h2>
+      <div className="carousel-container mt-6">
+        <div className="carousel-track">
+          {/* Duplicamos las imágenes para hacer el bucle continuo */}
+          {[...logos, ...logos].map((logo, index) => (
             <img
               key={index}
               src={logo}
               alt={`Logo ${index + 1}`}
-              className="h-20 w-auto object-contain"
+              className="object-contain"
             />
           ))}
         </div>
