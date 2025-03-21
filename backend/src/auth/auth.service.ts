@@ -3,6 +3,8 @@ import { JwtService } from '@nestjs/jwt';
 import { UsuarioService } from '../usuario/usuario.service'; // Asegúrate de tener un servicio de usuarios
 import * as bcrypt from 'bcrypt';
 
+//QUEEEEEEEEEEEEEEEEEEEEEE TALLLLLLLLLLL
+
 @Injectable()
 export class AuthService {
   constructor(
