@@ -28,6 +28,7 @@ import { RolModule } from './rol/rol.module';
 import { TipopagoModule } from './tipopago/tipopago.module';
 import { UsuarioModule } from './usuario/usuario.module';
 import { VisitaModule } from './visita/visita.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -36,7 +37,7 @@ import { VisitaModule } from './visita/visita.module';
       host: 'localhost', // Host de la base de datos
       port: 5432, // Puerto de PostgreSQL (por defecto es 5432)
       username: 'postgres', // Usuario de la base de datos
-      password: 'password', // Contraseña del usuario
+      password: 'password', // contrasena del usuario
       database: 'ClubCoffee',// Nombre de la base de datos
       entities: [
         Administrador,
@@ -68,6 +69,7 @@ import { VisitaModule } from './visita/visita.module';
     TipopagoModule,
     UsuarioModule,
     VisitaModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

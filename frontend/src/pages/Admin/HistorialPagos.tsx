@@ -37,7 +37,8 @@ const HistorialPagos = () => {
 
   // Filtros
   const [filtroCliente, setFiltroCliente] = useState<Option | null>(null);
-  const [filtroMes, setFiltroMes] = useState<Option | null>(null);
+  const [filtroFechaInicio, setFiltroFechaInicio] = useState<string>("");
+  const [filtroFechaFin, setFiltroFechaFin] = useState<string>("");
   const [filtroEstado, setFiltroEstado] = useState<Option | null>(null);
 
   // Opciones para los selects
@@ -45,21 +46,6 @@ const HistorialPagos = () => {
 
   const [mostrarCajaTexto, setMostrarCajaTexto] = useState(false);
   const [motivoRechazo, setMotivoRechazo] = useState("");
-
-  const opcionesMeses: Option[] = [
-    { value: "01", label: "Enero" },
-    { value: "02", label: "Febrero" },
-    { value: "03", label: "Marzo" },
-    { value: "04", label: "Abril" },
-    { value: "05", label: "Mayo" },
-    { value: "06", label: "Junio" },
-    { value: "07", label: "Julio" },
-    { value: "08", label: "Agosto" },
-    { value: "09", label: "Septiembre" },
-    { value: "10", label: "Octubre" },
-    { value: "11", label: "Noviembre" },
-    { value: "12", label: "Diciembre" },
-  ];
 
   const opcionesEstado: Option[] = [
     { value: "Pendiente", label: "Pendiente" },
@@ -155,10 +141,18 @@ const HistorialPagos = () => {
       );
     }
 
-    // Filtrar por mes
-    if (filtroMes) {
+    // Filtrar por rango de fechas
+    if (filtroFechaInicio && filtroFechaFin) {
       filtrados = filtrados.filter(
-        (pago) => pago.fechaPago.substring(5, 7) === filtroMes.value
+        (pago) => pago.fechaPago >= filtroFechaInicio && pago.fechaPago <= filtroFechaFin
+      );
+    } else if (filtroFechaInicio) {
+      filtrados = filtrados.filter(
+        (pago) => pago.fechaPago >= filtroFechaInicio
+      );
+    } else if (filtroFechaFin) {
+      filtrados = filtrados.filter(
+        (pago) => pago.fechaPago <= filtroFechaFin
       );
     }
 
@@ -170,12 +164,13 @@ const HistorialPagos = () => {
     }
 
     setPagosFiltrados(filtrados);
-  }, [filtroCliente, filtroMes, filtroEstado, pagos]);
+  }, [filtroCliente, filtroFechaInicio, filtroFechaFin, filtroEstado, pagos]);
 
   // Función para limpiar los filtros
   const limpiarFiltros = () => {
     setFiltroCliente(null);
-    setFiltroMes(null);
+    setFiltroFechaInicio("");
+    setFiltroFechaFin("");
     setFiltroEstado(null);
     setPagosFiltrados(pagos);
   };
@@ -345,15 +340,25 @@ const HistorialPagos = () => {
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Mes
+            Fecha Inicio
           </label>
-          <Select
-            styles={customStyles}
-            isClearable
-            placeholder="Filtrar por mes..."
-            options={opcionesMeses}
-            value={filtroMes}
-            onChange={(selectedOption) => setFiltroMes(selectedOption)}
+          <input
+            type="date"
+            className="w-full rounded-md border border-gray-300 p-2 focus:border-blue-500 focus:outline-none"
+            value={filtroFechaInicio}
+            onChange={(e) => setFiltroFechaInicio(e.target.value)}
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Fecha Fin
+          </label>
+          <input
+            type="date"
+            className="w-full rounded-md border border-gray-300 p-2 focus:border-blue-500 focus:outline-none"
+            value={filtroFechaFin}
+            onChange={(e) => setFiltroFechaFin(e.target.value)}
           />
         </div>
 
@@ -371,7 +376,7 @@ const HistorialPagos = () => {
           />
         </div>
 
-        <div className="flex items-end">
+        <div className="flex items-end md:col-span-4">
           <button
             onClick={limpiarFiltros}
             className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-md transition-colors duration-200 w-full"
@@ -494,23 +499,6 @@ const HistorialPagos = () => {
             />
           </div>
 
-          {/* {pagoSeleccionado && pagoSeleccionado.estado === "Pendiente" && (
-            <div className="flex justify-end space-x-4">
-              <button 
-                onClick={rechazarPago}
-                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md transition-colors duration-200"
-              >
-                Rechazar Pago
-              </button>
-              <button 
-                onClick={validarPago}
-                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md transition-colors duration-200"
-              >
-                Validar Pago
-              </button>
-            </div>
-          )} */}
-
           {pagoSeleccionado && pagoSeleccionado.estado === "Pendiente" && (
             <div>
               <div className="flex justify-end space-x-4">
@@ -535,7 +523,6 @@ const HistorialPagos = () => {
                   </label>
                   <textarea
                     className="w-full p-2 border border-gray-300 rounded mt-1"
-                    
                     value={motivoRechazo}
                     onChange={(e) => setMotivoRechazo(e.target.value)}
                   />

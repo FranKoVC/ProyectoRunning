@@ -120,10 +120,10 @@ const Login: React.FC = () => {
             <div className="mb-6">
               <div className="flex items-center justify-between mb-2">
                 <label htmlFor="password" className="block text-gray-700 text-sm font-medium">
-                  Contraseña
+                  contrasena
                 </label>
                 <a href="/recuperar-password" className="text-sm text-blue-600 hover:underline">
-                  ¿Olvidaste tu contraseña?
+                  ¿Olvidaste tu contrasena?
                 </a>
               </div>
               <input

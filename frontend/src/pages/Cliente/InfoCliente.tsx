@@ -35,6 +35,12 @@ interface Option {
   label: string;
 }
 
+// Interfaz para el rango de fechas
+interface RangoFechas {
+  fechaInicio: string;
+  fechaFin: string;
+}
+
 const InfoCliente = () => {
   const [vistaSeleccionada, setVistaSeleccionada] = useState<"pagos" | "visitas">("pagos");
   const [pagos, setPagos] = useState<Pago[]>([]);
@@ -47,10 +53,20 @@ const InfoCliente = () => {
   // Estados para los filtros
   const [filtroMembresia, setFiltroMembresia] = useState<Option | null>(null);
   const [filtroEstadoPago, setFiltroEstadoPago] = useState<Option | null>(null);
-  const [filtroFechaPago, setFiltroFechaPago] = useState<Option | null>(null);
+  
+  // Nuevo estado para rango de fechas de pago
+  const [filtroRangoFechaPago, setFiltroRangoFechaPago] = useState<RangoFechas>({
+    fechaInicio: "",
+    fechaFin: ""
+  });
   
   const [filtroEmpresa, setFiltroEmpresa] = useState<Option | null>(null);
-  const [filtroMesVisita, setFiltroMesVisita] = useState<Option | null>(null);
+  
+  // Nuevo estado para rango de fechas de visita
+  const [filtroRangoFechaVisita, setFiltroRangoFechaVisita] = useState<RangoFechas>({
+    fechaInicio: "",
+    fechaFin: ""
+  });
   
   // Estado para modal
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -69,21 +85,6 @@ const InfoCliente = () => {
     { value: "pendiente", label: "Pendiente" },
     { value: "validado", label: "Validado" },
     { value: "rechazado", label: "Rechazado" }
-  ];
-
-  const opcionesMeses: Option[] = [
-    { value: "01", label: "Enero" },
-    { value: "02", label: "Febrero" },
-    { value: "03", label: "Marzo" },
-    { value: "04", label: "Abril" },
-    { value: "05", label: "Mayo" },
-    { value: "06", label: "Junio" },
-    { value: "07", label: "Julio" },
-    { value: "08", label: "Agosto" },
-    { value: "09", label: "Septiembre" },
-    { value: "10", label: "Octubre" },
-    { value: "11", label: "Noviembre" },
-    { value: "12", label: "Diciembre" }
   ];
 
   // Opciones de empresas
@@ -174,6 +175,24 @@ const InfoCliente = () => {
     })));
   }, []);
 
+  // Función para manejar cambios en el rango de fechas de pago
+  const handleRangoFechaPagoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFiltroRangoFechaPago(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  // Función para manejar cambios en el rango de fechas de visita
+  const handleRangoFechaVisitaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFiltroRangoFechaVisita(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
   // Función para filtrar pagos
   useEffect(() => {
     let filtrados = [...pagos];
@@ -192,16 +211,22 @@ const InfoCliente = () => {
       );
     }
     
-    // Filtrar por mes de pago
-    if (filtroFechaPago) {
+    // Filtrar por rango de fechas de pago
+    if (filtroRangoFechaPago.fechaInicio && filtroRangoFechaPago.fechaFin) {
       filtrados = filtrados.filter(pago => {
-        const mesPago = pago.fechaPago.split('-')[1];
-        return mesPago === filtroFechaPago.value;
+        const fechaPago = new Date(pago.fechaPago);
+        const fechaInicio = new Date(filtroRangoFechaPago.fechaInicio);
+        const fechaFin = new Date(filtroRangoFechaPago.fechaFin);
+        
+        // Ajustar fechaFin para incluir todo el día
+        fechaFin.setHours(23, 59, 59, 999);
+        
+        return fechaPago >= fechaInicio && fechaPago <= fechaFin;
       });
     }
     
     setPagosFiltrados(filtrados);
-  }, [filtroMembresia, filtroEstadoPago, filtroFechaPago, pagos]);
+  }, [filtroMembresia, filtroEstadoPago, filtroRangoFechaPago, pagos]);
 
   // Función para filtrar visitas
   useEffect(() => {
@@ -214,27 +239,39 @@ const InfoCliente = () => {
       );
     }
     
-    // Filtrar por mes de visita
-    if (filtroMesVisita) {
+    // Filtrar por rango de fechas de visita
+    if (filtroRangoFechaVisita.fechaInicio && filtroRangoFechaVisita.fechaFin) {
       filtradas = filtradas.filter(visita => {
-        const mesVisita = visita.fecha.split('-')[1];
-        return mesVisita === filtroMesVisita.value;
+        const fechaVisita = new Date(visita.fecha);
+        const fechaInicio = new Date(filtroRangoFechaVisita.fechaInicio);
+        const fechaFin = new Date(filtroRangoFechaVisita.fechaFin);
+        
+        // Ajustar fechaFin para incluir todo el día
+        fechaFin.setHours(23, 59, 59, 999);
+        
+        return fechaVisita >= fechaInicio && fechaVisita <= fechaFin;
       });
     }
     
     setVisitasFiltradas(filtradas);
-  }, [filtroEmpresa, filtroMesVisita, visitas]);
+  }, [filtroEmpresa, filtroRangoFechaVisita, visitas]);
 
   // Función para limpiar los filtros
   const limpiarFiltros = () => {
     if (vistaSeleccionada === "pagos") {
       setFiltroMembresia(null);
       setFiltroEstadoPago(null);
-      setFiltroFechaPago(null);
+      setFiltroRangoFechaPago({
+        fechaInicio: "",
+        fechaFin: ""
+      });
       setPagosFiltrados(pagos);
     } else {
       setFiltroEmpresa(null);
-      setFiltroMesVisita(null);
+      setFiltroRangoFechaVisita({
+        fechaInicio: "",
+        fechaFin: ""
+      });
       setVisitasFiltradas(visitas);
     }
   };
@@ -367,7 +404,7 @@ const InfoCliente = () => {
               <h2 className="text-2xl font-bold mb-6 text-gray-800">Historial de Pagos</h2>
               
               {/* Filtros para historial de pagos */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Membresía</label>
                   <Select
@@ -392,17 +429,35 @@ const InfoCliente = () => {
                   />
                 </div>
                 
+                {/* Reemplazado el select de mes por un rango de fechas */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Mes de pago</label>
-                  <Select
-                    styles={customStyles}
-                    isClearable
-                    placeholder="Filtrar por mes..."
-                    options={opcionesMeses}
-                    value={filtroFechaPago}
-                    onChange={(selectedOption) => setFiltroFechaPago(selectedOption)}
-                  />
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Fecha Inicio</label>
+                 
+                    <div>
+                      <input
+                        type="date"
+                        name="fechaInicio"
+                        value={filtroRangoFechaPago.fechaInicio}
+                        onChange={handleRangoFechaPagoChange}
+                        className="w-full rounded-md border border-gray-300 p-2 focus:border-blue-500 focus:outline-none"
+                      />
+                    </div>
                 </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Fecha Fin</label>                                 
+                    <div>
+                      <input
+                        type="date"
+                        name="fechaFin"
+                        value={filtroRangoFechaPago.fechaFin}
+                        onChange={handleRangoFechaPagoChange}
+                        className="w-full rounded-md border border-gray-300 p-2 focus:border-blue-500 focus:outline-none"
+                      />
+                    </div>
+                  
+                </div>
+
               </div>
               
               <button 
@@ -496,16 +551,31 @@ const InfoCliente = () => {
                   />
                 </div>
                 
+                {/* Reemplazado el select de mes por un rango de fechas */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Mes de visita</label>
-                  <Select
-                    styles={customStyles}
-                    isClearable
-                    placeholder="Filtrar por mes..."
-                    options={opcionesMeses}
-                    value={filtroMesVisita}
-                    onChange={(selectedOption) => setFiltroMesVisita(selectedOption)}
-                  />
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Rango de fechas de visita</label>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <label className="block text-xs text-gray-500">Desde</label>
+                      <input
+                        type="date"
+                        name="fechaInicio"
+                        value={filtroRangoFechaVisita.fechaInicio}
+                        onChange={handleRangoFechaVisitaChange}
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs text-gray-500">Hasta</label>
+                      <input
+                        type="date"
+                        name="fechaFin"
+                        value={filtroRangoFechaVisita.fechaFin}
+                        onChange={handleRangoFechaVisitaChange}
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
               

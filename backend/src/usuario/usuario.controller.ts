@@ -1,6 +1,13 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, BadRequestException } from '@nestjs/common';
 import { UsuarioService } from './usuario.service';
 import { Usuario } from '../entities/Usuario';
+
+// DTO para validar la entrada de datos
+class CreateUserDto {
+    correo: string;
+    contrasena: string;
+    idRol: number;
+}
 
 @Controller('usuario')
 export class UsuarioController {
@@ -12,7 +19,13 @@ export class UsuarioController {
     }
     
     @Post()
-    async create(@Body() usuario: Usuario): Promise<Usuario> {
-        return this.usuarioService.create(usuario);
+    async create(@Body() createUserDto: CreateUserDto): Promise<Usuario> {
+        const { correo, contrasena, idRol } = createUserDto;
+
+        if (!correo || !contrasena || !idRol) {
+            throw new BadRequestException('Todos los campos son obligatorios.');
+        }
+
+        return this.usuarioService.createUser(correo, contrasena, idRol);
     }
 }
