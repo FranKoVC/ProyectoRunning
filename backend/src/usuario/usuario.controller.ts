@@ -7,6 +7,9 @@ class CreateUserDto {
     correo: string;
     contrasena: string;
     idRol: number;
+    estado: string;
+    celular: string;
+    foto: string;
 }
 
 @Controller('usuario')
@@ -20,12 +23,12 @@ export class UsuarioController {
     
     @Post()
     async create(@Body() createUserDto: CreateUserDto): Promise<Usuario> {
-        const { correo, contrasena, idRol } = createUserDto;
+        const { correo, contrasena, idRol, celular, estado, foto } = createUserDto;
 
-        if (!correo || !contrasena || !idRol) {
+        if (!correo || !contrasena || !idRol || !celular|| !estado || !foto) {
             throw new BadRequestException('Todos los campos son obligatorios.');
         }
 
-        return this.usuarioService.createUser(correo, contrasena, idRol);
+        return this.usuarioService.createUser(correo, contrasena, idRol, celular, estado, foto);
     }
 }

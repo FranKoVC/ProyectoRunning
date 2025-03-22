@@ -1,7 +1,6 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import * as bcrypt from 'bcrypt';
 import { Usuario } from '../entities/Usuario';
 import { Rol } from '../entities/Rol';
 
@@ -15,7 +14,7 @@ export class UsuarioService {
         private readonly rolRepository: Repository<Rol>
     ) {}
 
-    async createUser(correo: string, contrasena: string, idRol: number): Promise<Usuario> {
+    async createUser(correo: string, contrasena: string, idRol: number, celular: string, estado: string, foto: string): Promise<Usuario> {
         // Validaciones básicas
         if (!correo) throw new BadRequestException('El correo es requerido.');
         if (!contrasena) throw new BadRequestException('La contraseña es requerida.');
@@ -29,15 +28,14 @@ export class UsuarioService {
         const rol = await this.rolRepository.findOne({ where: { idRol } });
         if (!rol) throw new BadRequestException('El rol especificado no existe.');
 
-        // Hashear la contraseña
-        const hashedPassword = await bcrypt.hash(contrasena, 10);
-
         // Crear usuario
         const newUsuario = this.usuarioRepository.create({
             correo,
-            contrasena: hashedPassword,
+            contrasena,
+            celular,
+            foto,
             fechaCreacion: new Date(),
-            estado: 'activo',
+            estado,
             idRol: rol
         });
 
@@ -48,7 +46,8 @@ export class UsuarioService {
         return await this.usuarioRepository.find({ relations: ['idRol'] });
     }
 
-    async findByEmail(correo: string): Promise<Usuario | null> {
-        return await this.usuarioRepository.findOne({ where: { correo } });
+    async findByEmail(email: string): Promise<Usuario | null> {
+        return await this.usuarioRepository.findOne({ where: { correo: email },
+        relations: ['idRol'] });
     }
 }

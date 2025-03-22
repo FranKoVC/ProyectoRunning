@@ -48,6 +48,7 @@ export class Usuario {
   empresas: Empresa[];
 
   @ManyToOne(() => Rol, (rol) => rol.usuarios)
+  
   @JoinColumn([{ name: "id_rol", referencedColumnName: "idRol" }])
   idRol: Rol;
 
