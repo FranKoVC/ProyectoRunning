@@ -20,6 +20,7 @@ const Login: React.FC = () => {
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [rememberMe, setRememberMe] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false); // Estado para mostrar/ocultar contraseña
 
   const navigate = useNavigate();
 
@@ -36,19 +37,22 @@ const Login: React.FC = () => {
 
     try {
       const response = await login(formData.email, formData.password);
-      console.log('Respuesta del servidor:', response);
-    
+      console.log("Respuesta del servidor:", response);
+
       // Guardar el token en localStorage
-      localStorage.setItem('access_token', response.access_token);
-    
+      localStorage.setItem("access_token", response.access_token);
+
       // Decodificar el token para verificar el rol
       const decodedToken: any = jwtDecode(response.access_token);
-      console.log('Token decodificado:', decodedToken);
-    
+      console.log("Token decodificado:", decodedToken);
+
       // Verifica el valor del rol en el token decodificado
       const userRole = decodedToken.role || decodedToken.rol; // Depende de cómo lo envíe el backend
-      console.log('Rol del usuario (desde el token):', userRole);
-    
+      console.log("Rol del usuario (desde el token):", userRole);
+
+      // Guardar el rol en localStorage
+      localStorage.setItem("userRole", JSON.stringify(userRole));
+
       // Redirigir según el rol del usuario
       if (userRole.idRol === 3) {
         navigate("/cliente/home/clienteinformacion");
@@ -57,13 +61,13 @@ const Login: React.FC = () => {
       } else if (userRole.idRol === 2) {
         navigate("/admin/areportes");
       } else {
-        navigate("/dashboard"); // Ruta genérica si no hay un rol específico
+        navigate("/"); // Ruta genérica si no hay un rol específico
       }
     } catch (err) {
       setLoading(false);
       setError("Credenciales incorrectas. Por favor intenta nuevamente.");
     }
-  }
+  };
 
   return (
     <>
@@ -145,16 +149,61 @@ const Login: React.FC = () => {
                     ¿Olvidaste tu contraseña?
                   </a>
                 </div>
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                  placeholder="••••••••"
-                />
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"} // Cambia el tipo de input
+                    id="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors pr-10"
+                    placeholder="••••••••"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)} // Alternar visibilidad
+                    className="absolute inset-y-0 right-0 px-3 flex items-center text-gray-500 hover:text-blue-600"
+                  >
+                    {showPassword ? (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                        />
+                      </svg>
+                    ) : (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
+                        />
+                      </svg>
+                    )}
+                  </button>
+                </div>
               </div>
 
               <div className="flex items-center mb-6">

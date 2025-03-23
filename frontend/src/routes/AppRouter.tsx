@@ -1,11 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
+import Home from "../components/Home";
+
 import AReportes from "../pages/Admin/Reportes";
 import APlanesPage from "../pages/Admin/CreacionPlanes/APlanesPage";
 import CrearPlan from "../pages/Admin/CreacionPlanes/CrearPlan";
 import ARegistroEmpresa from "../pages/Admin/RegistroEmpresa";
 
-import ClienteHome from "../pages/Cliente/Home";
 import ClienteContacto from "../pages/Cliente/Contacto";
 import ClienteBeneficios from "../pages/Cliente/Beneficios";
 import ClientePlanes from "../pages/Cliente/Planes";
@@ -13,15 +14,15 @@ import ClienteSNosotros from "../pages/Cliente/SobreNosotros";
 import ClienteRegistro from "../pages/Cliente/Registro";
 import DetalleBeneficio from "../pages/Cliente/DetalleBeneficio";
 import ClientePago from "../pages/Cliente/PagoVoucher";
-import ClienteInfo from "../pages/Cliente/InfoCliente"
+import ClienteInfo from "../pages/Cliente/InfoCliente";
 
 import ERegistroVisita from "../pages/Empresa/RegistroVisitas";
-import EGestorBeneficio from "../pages/Empresa/GestorBeneficios";
+import EAdminBeneficio from "../pages/Empresa/AdminBeneficios";
 
 
 import Login from "../pages/Auth/Login";
 
-import Menu from "../pages/Dashboard";
+
 
 const AppRouter = () => {
   return (
@@ -37,7 +38,6 @@ const AppRouter = () => {
 
 
         {/* Rutas para Cliente */}
-        <Route path="/cliente/home" element={<ClienteHome />} />
         <Route path="/cliente/home/contacto" element={<ClienteContacto />} />
         <Route path="/cliente/home/beneficios" element={<ClienteBeneficios />} />
         <Route path="/cliente/home/beneficios/:id" element={<DetalleBeneficio />} />
@@ -49,7 +49,7 @@ const AppRouter = () => {
 
         {/* Rutas para Empresa */}
         <Route path="/empresa/eregistrovisita" element={<ERegistroVisita />} />
-        <Route path="/empresa/egestorbeneficio" element={<EGestorBeneficio />} />
+        <Route path="/empresa/egestorbeneficio" element={<EAdminBeneficio/>} />
 
 
 
@@ -58,7 +58,7 @@ const AppRouter = () => {
         
 
         {/* Ruta por defecto */}
-        <Route path="*" element={<Menu/>} />
+        <Route path="/" element={<Home/>} />
       </Routes>
     </Router>
   );
