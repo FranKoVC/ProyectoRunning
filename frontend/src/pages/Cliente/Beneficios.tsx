@@ -34,6 +34,19 @@ const Beneficio = () => {
     ? beneficios
     : beneficios.filter((b) => b.categoria === categoriaSeleccionada);
 
+  const handleVerBeneficio = (ruta: string) => {
+    // Verificar si el usuario está autenticado (tiene token en localStorage)
+    const token = localStorage.getItem("access_token");
+    
+    if (token) {
+      // Usuario autenticado, navegar a la ruta del beneficio
+      navigate(ruta);
+    } else {
+      // Usuario no autenticado, redirigir al login
+      navigate("/login");
+    }
+  };
+
   return (
     <div>
       <Navbar />
@@ -63,7 +76,7 @@ const Beneficio = () => {
                 <h4 className="text-md font-bold">{beneficio.categoria}</h4>
                 <button
                   className="mt-3 bg-red-700 text-white px-3 py-2 rounded transition-all duration-300 hover:bg-red-600 active:scale-95"
-                  onClick={() => navigate(beneficio.ruta)}
+                  onClick={() => handleVerBeneficio(beneficio.ruta)}
                 >
                   Ver beneficio →
                 </button>
