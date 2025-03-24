@@ -113,7 +113,7 @@ const Navbar = () => {
           {isLoggedIn && userRole === 3 && (
             <li>
               <Link to="/cliente/home/clienteinformacion" className="nav-link">
-                Mi cuenta
+                Mi Cuenta
               </Link>
             </li>
           )}

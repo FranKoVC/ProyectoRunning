@@ -1,11 +1,12 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import Navbar from '../../components/Navbar';
+import Footer from '../../components/Footer';
+import EditarPerfil from '../../components/EditarPerfil';
+import AdministrarMembresia from '../../components/AdministrarMembresia';
 import { Bar } from "react-chartjs-2";
 import "chart.js/auto";
 import Select from "react-select";
 import Modal from "react-modal";
-
-import Navbar from '../../components/Navbar';
-import Footer from '../../components/Footer';
 
 // Configurar Modal para accesibilidad
 Modal.setAppElement('#root');
@@ -42,7 +43,7 @@ interface RangoFechas {
 }
 
 const InfoCliente = () => {
-  const [vistaSeleccionada, setVistaSeleccionada] = useState<"pagos" | "visitas">("pagos");
+  const [vistaSeleccionada, setVistaSeleccionada] = useState<"pagos" | "visitas" | "editarPerfil" | "administrarMembresia">("pagos");
   const [pagos, setPagos] = useState<Pago[]>([]);
   const [visitas, setVisitas] = useState<Visita[]>([]);
 
@@ -69,9 +70,9 @@ const InfoCliente = () => {
   });
   
   // Estado para modal
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [comprobanteSeleccionado, setComprobanteSeleccionado] = useState<string | null>(null);
-  const [detalleSeleccionado, setDetalleSeleccionado] = useState<Pago | null>(null);
+  const [, setModalIsOpen] = useState(false);
+  const [, setComprobanteSeleccionado] = useState<string | null>(null);
+  const [, setDetalleSeleccionado] = useState<Pago | null>(null);
 
   // Opciones para los selects
   const opcionesMembresías: Option[] = [
@@ -356,342 +357,258 @@ const InfoCliente = () => {
   };
 
   // Estilos para el modal
-  const customModalStyles = {
-    content: {
-      top: '50%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '-50%',
-      transform: 'translate(-50%, -50%)',
-      maxWidth: '90%',
-      maxHeight: '90%',
-      borderRadius: '8px',
-      padding: '20px',
-    },
-    overlay: {
-      backgroundColor: 'rgba(0, 0, 0, 0.75)'
-    }
-  };
 
   return (
     <>
-    <Navbar />
-    <div className="p-6 bg-gray-50 min-h-screen">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold mb-6 text-gray-800">Mi Cuenta</h1>
-        
-        {/* Menú de selección de vista */}
-        <div className="flex space-x-4 mb-8">
-          <button 
-            onClick={() => setVistaSeleccionada("pagos")} 
-            className={`px-6 py-2 rounded-lg font-medium transition ${vistaSeleccionada === "pagos" ? "bg-blue-600 text-white shadow-md" : "bg-white text-gray-600 hover:bg-gray-100"}`}
-          >
-            Historial de Pagos
-          </button>
-          <button 
-            onClick={() => setVistaSeleccionada("visitas")} 
-            className={`px-6 py-2 rounded-lg font-medium transition ${vistaSeleccionada === "visitas" ? "bg-blue-600 text-white shadow-md" : "bg-white text-gray-600 hover:bg-gray-100"}`}
-          >
-            Historial de Visitas
-          </button>
-        </div>
-
-        {/* Contenido de la vista seleccionada */}
-        <div className="bg-white rounded-lg shadow-md p-6">
-          {vistaSeleccionada === "pagos" ? (
-            <>
-              <h2 className="text-2xl font-bold mb-6 text-gray-800">Historial de Pagos</h2>
-              
-              {/* Filtros para historial de pagos */}
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Membresía</label>
-                  <Select
-                    styles={customStyles}
-                    isClearable
-                    placeholder="Filtrar por membresía..."
-                    options={opcionesMembresías}
-                    value={filtroMembresia}
-                    onChange={(selectedOption) => setFiltroMembresia(selectedOption)}
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Estado</label>
-                  <Select
-                    styles={customStyles}
-                    isClearable
-                    placeholder="Filtrar por estado..."
-                    options={opcionesEstados}
-                    value={filtroEstadoPago}
-                    onChange={(selectedOption) => setFiltroEstadoPago(selectedOption)}
-                  />
-                </div>
-                
-                {/* Reemplazado el select de mes por un rango de fechas */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Fecha Inicio</label>
-                 
-                    <div>
-                      <input
-                        type="date"
-                        name="fechaInicio"
-                        value={filtroRangoFechaPago.fechaInicio}
-                        onChange={handleRangoFechaPagoChange}
-                        className="w-full rounded-md border border-gray-300 p-2 focus:border-blue-500 focus:outline-none"
-                      />
-                    </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Fecha Fin</label>                                 
-                    <div>
-                      <input
-                        type="date"
-                        name="fechaFin"
-                        value={filtroRangoFechaPago.fechaFin}
-                        onChange={handleRangoFechaPagoChange}
-                        className="w-full rounded-md border border-gray-300 p-2 focus:border-blue-500 focus:outline-none"
-                      />
-                    </div>
-                  
-                </div>
-
-              </div>
-              
-              <button 
-                onClick={limpiarFiltros}
-                className="mb-6 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded transition"
-              >
-                Limpiar filtros
-              </button>
-              
-              {/* Tabla de pagos */}
-              <div className="overflow-x-auto rounded-lg border border-gray-200">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Membresía</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Monto</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha de Pago</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vencimiento</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Comprobante</th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {pagosFiltrados.length > 0 ? (
-                      pagosFiltrados.map((pago) => (
-                        <tr key={pago.id} className="hover:bg-gray-50">
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{pago.id}</td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{pago.membresia}</td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">S/ {pago.monto.toFixed(2)}</td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{pago.fechaPago}</td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{pago.fechaVencimiento}</td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm">{renderEstadoPago(pago.estado)}</td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm">
-                            <button 
-                              onClick={() => verComprobante(pago)}
-                              className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm transition"
-                            >
-                              Ver comprobante
-                            </button>
-                          </td>
-                        </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td colSpan={7} className="px-6 py-4 text-center text-gray-500">
-                          No se encontraron registros de pagos con los filtros seleccionados
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-              
-              {/* Resumen del estado de membresía */}
-              {pagos.length > 0 && (
-                <div className="mt-8 p-6 bg-blue-50 rounded-lg border border-blue-100">
-                  <h3 className="text-lg font-semibold mb-2 text-blue-800">Estado de mi membresía</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="bg-white p-4 rounded-lg shadow-sm">
-                      <p className="text-gray-500 text-sm">Tipo de membresía actual</p>
-                      <p className="font-bold text-lg">{pagos[pagos.length - 1].membresia}</p>
-                    </div>
-                    <div className="bg-white p-4 rounded-lg shadow-sm">
-                      <p className="text-gray-500 text-sm">Fecha de vencimiento</p>
-                      <p className="font-bold text-lg">{pagos[pagos.length - 1].fechaVencimiento}</p>
-                    </div>
-                    <div className="bg-white p-4 rounded-lg shadow-sm">
-                      <p className="text-gray-500 text-sm">Estado</p>
-                      <p className="font-bold text-lg">{renderEstadoPago(pagos[pagos.length - 1].estado)}</p>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </>
-          ) : (
-            <>
-              <h2 className="text-2xl font-bold mb-6 text-gray-800">Historial de Visitas</h2>
-              
-              {/* Filtros para historial de visitas */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Empresa</label>
-                  <Select
-                    styles={customStyles}
-                    isClearable
-                    placeholder="Filtrar por empresa..."
-                    options={opcionesEmpresas}
-                    value={filtroEmpresa}
-                    onChange={(selectedOption) => setFiltroEmpresa(selectedOption)}
-                  />
-                </div>
-                
-                {/* Reemplazado el select de mes por un rango de fechas */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Rango de fechas de visita</label>
-                  <div className="grid grid-cols-2 gap-2">
-                    <div>
-                      <label className="block text-xs text-gray-500">Desde</label>
-                      <input
-                        type="date"
-                        name="fechaInicio"
-                        value={filtroRangoFechaVisita.fechaInicio}
-                        onChange={handleRangoFechaVisitaChange}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs text-gray-500">Hasta</label>
-                      <input
-                        type="date"
-                        name="fechaFin"
-                        value={filtroRangoFechaVisita.fechaFin}
-                        onChange={handleRangoFechaVisitaChange}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <button 
-                onClick={limpiarFiltros}
-                className="mb-6 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded transition"
-              >
-                Limpiar filtros
-              </button>
-              
-              {/* Tabla de visitas */}
-              <div className="overflow-x-auto rounded-lg border border-gray-200">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Empresa</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Servicio</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Monto</th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {visitasFiltradas.length > 0 ? (
-                      visitasFiltradas.map((visita) => (
-                        <tr key={visita.id} className="hover:bg-gray-50">
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{visita.id}</td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{visita.fecha}</td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{visita.empresa}</td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{visita.servicio}</td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">S/ {visita.monto.toFixed(2)}</td>
-                        </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td colSpan={5} className="px-6 py-4 text-center text-gray-500">
-                          No se encontraron registros de visitas con los filtros seleccionados
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-              
-              {/* Gráficos de análisis de visitas */}
-              {visitasFiltradas.length > 0 && (
-                <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="bg-white p-4 rounded-lg shadow border border-gray-200">
-                    <h3 className="text-lg font-semibold mb-4 text-gray-800">Visitas por empresa</h3>
-                    <Bar data={visitasPorEmpresa} />
-                  </div>
-                  <div className="bg-white p-4 rounded-lg shadow border border-gray-200">
-                    <h3 className="text-lg font-semibold mb-4 text-gray-800">Gastos por empresa</h3>
-                    <Bar data={gastosPorEmpresa} />
-                  </div>
-                </div>
-              )}
-            </>
-          )}
-        </div>
-      </div>
-      
-      {/* Modal para ver comprobante */}
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={() => setModalIsOpen(false)}
-        style={customModalStyles}
-        contentLabel="Comprobante de Pago"
-      >
-        <div className="relative">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold">Comprobante de Pago</h2>
+      <Navbar />
+      <div className="p-6 bg-gray-50 min-h-screen">
+        <div className="max-w-6xl mx-auto">
+          <h1 className="text-3xl font-bold mb-6 text-gray-800">Mi Cuenta</h1>
+          
+          {/* Menú de selección de vista */}
+          <div className="flex space-x-4 mb-8">
             <button 
-              onClick={() => setModalIsOpen(false)}
-              className="text-gray-500 hover:text-gray-700"
+              onClick={() => setVistaSeleccionada("pagos")} 
+              className={`px-6 py-2 rounded-lg font-medium transition ${vistaSeleccionada === "pagos" ? "bg-blue-600 text-white shadow-md" : "bg-white text-gray-600 hover:bg-gray-100"}`}
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
+              Historial de Pagos
+            </button>
+            <button 
+              onClick={() => setVistaSeleccionada("visitas")} 
+              className={`px-6 py-2 rounded-lg font-medium transition ${vistaSeleccionada === "visitas" ? "bg-blue-600 text-white shadow-md" : "bg-white text-gray-600 hover:bg-gray-100"}`}
+            >
+              Historial de Visitas
+            </button>
+            <button 
+              onClick={() => setVistaSeleccionada("editarPerfil")} 
+              className={`px-6 py-2 rounded-lg font-medium transition ${vistaSeleccionada === "editarPerfil" ? "bg-blue-600 text-white shadow-md" : "bg-white text-gray-600 hover:bg-gray-100"}`}
+            >
+              Editar Perfil
+            </button>
+            <button 
+              onClick={() => setVistaSeleccionada("administrarMembresia")} 
+              className={`px-6 py-2 rounded-lg font-medium transition ${vistaSeleccionada === "administrarMembresia" ? "bg-blue-600 text-white shadow-md" : "bg-white text-gray-600 hover:bg-gray-100"}`}
+            >
+              Administrar Membresía
             </button>
           </div>
-          
-          {detalleSeleccionado && (
-            <div className="flex flex-col md:flex-row">
-              <div className="md:w-1/2 p-4">
-                <h3 className="font-medium text-lg mb-4">Detalles del pago</h3>
-                <div className="space-y-2">
-                  <p><span className="font-medium">ID:</span> {detalleSeleccionado.id}</p>
-                  <p><span className="font-medium">Membresía:</span> {detalleSeleccionado.membresia}</p>
-                  <p><span className="font-medium">Monto:</span> S/ {detalleSeleccionado.monto.toFixed(2)}</p>
-                  <p><span className="font-medium">Fecha de pago:</span> {detalleSeleccionado.fechaPago}</p>
-                  <p><span className="font-medium">Fecha de vencimiento:</span> {detalleSeleccionado.fechaVencimiento}</p>
-                  <p>
-                    <span className="font-medium">Estado:</span> {renderEstadoPago(detalleSeleccionado.estado)}
-                  </p>
-                </div>
-              </div>
-              
-              <div className="md:w-1/2 p-4">
-                <h3 className="font-medium text-lg mb-4">Imagen del comprobante</h3>
-                <div className="border border-gray-200 rounded-lg overflow-hidden">
-                  {comprobanteSeleccionado && (
-                    <img 
-                      src={comprobanteSeleccionado} 
-                      alt="Comprobante de pago" 
-                      className="max-w-full h-auto"
+
+          {/* Contenido de la vista seleccionada */}
+          <div className="bg-white rounded-lg shadow-md p-6">
+            {vistaSeleccionada === "pagos" ? (
+              <>
+                <h2 className="text-2xl font-bold mb-6 text-gray-800">Historial de Pagos</h2>
+                
+                {/* Filtros para historial de pagos */}
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Membresía</label>
+                    <Select
+                      styles={customStyles}
+                      isClearable
+                      placeholder="Filtrar por membresía..."
+                      options={opcionesMembresías}
+                      value={filtroMembresia}
+                      onChange={(selectedOption) => setFiltroMembresia(selectedOption)}
                     />
-                  )}
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Estado</label>
+                    <Select
+                      styles={customStyles}
+                      isClearable
+                      placeholder="Filtrar por estado..."
+                      options={opcionesEstados}
+                      value={filtroEstadoPago}
+                      onChange={(selectedOption) => setFiltroEstadoPago(selectedOption)}
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Fecha Inicio</label>
+                    <input
+                      type="date"
+                      name="fechaInicio"
+                      value={filtroRangoFechaPago.fechaInicio}
+                      onChange={handleRangoFechaPagoChange}
+                      className="w-full rounded-md border border-gray-300 p-2 focus:border-blue-500 focus:outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Fecha Fin</label>
+                    <input
+                      type="date"
+                      name="fechaFin"
+                      value={filtroRangoFechaPago.fechaFin}
+                      onChange={handleRangoFechaPagoChange}
+                      className="w-full rounded-md border border-gray-300 p-2 focus:border-blue-500 focus:outline-none"
+                    />
+                  </div>
                 </div>
-              </div>
-            </div>
-          )}
+                
+                <button 
+                  onClick={limpiarFiltros}
+                  className="mb-6 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded transition"
+                >
+                  Limpiar filtros
+                </button>
+                
+                {/* Tabla de pagos */}
+                <div className="overflow-x-auto rounded-lg border border-gray-200">
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Membresía</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Monto</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha de Pago</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vencimiento</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Comprobante</th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {pagosFiltrados.length > 0 ? (
+                        pagosFiltrados.map((pago) => (
+                          <tr key={pago.id} className="hover:bg-gray-50">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{pago.id}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{pago.membresia}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">S/ {pago.monto.toFixed(2)}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{pago.fechaPago}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{pago.fechaVencimiento}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm">{renderEstadoPago(pago.estado)}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm">
+                              <button 
+                                onClick={() => verComprobante(pago)}
+                                className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm transition"
+                              >
+                                Ver comprobante
+                              </button>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan={7} className="px-6 py-4 text-center text-gray-500">
+                            No se encontraron registros de pagos con los filtros seleccionados
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </>
+            ) : vistaSeleccionada === "visitas" ? (
+              <>
+                <h2 className="text-2xl font-bold mb-6 text-gray-800">Historial de Visitas</h2>
+                
+                {/* Filtros para historial de visitas */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Empresa</label>
+                    <Select
+                      styles={customStyles}
+                      isClearable
+                      placeholder="Filtrar por empresa..."
+                      options={opcionesEmpresas}
+                      value={filtroEmpresa}
+                      onChange={(selectedOption) => setFiltroEmpresa(selectedOption)}
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Rango de fechas de visita</label>
+                    <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <label className="block text-xs text-gray-500">Desde</label>
+                        <input
+                          type="date"
+                          name="fechaInicio"
+                          value={filtroRangoFechaVisita.fechaInicio}
+                          onChange={handleRangoFechaVisitaChange}
+                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-gray-500">Hasta</label>
+                        <input
+                          type="date"
+                          name="fechaFin"
+                          value={filtroRangoFechaVisita.fechaFin}
+                          onChange={handleRangoFechaVisitaChange}
+                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <button 
+                  onClick={limpiarFiltros}
+                  className="mb-6 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded transition"
+                >
+                  Limpiar filtros
+                </button>
+                
+                {/* Tabla de visitas */}
+                <div className="overflow-x-auto rounded-lg border border-gray-200">
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Empresa</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Servicio</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Monto</th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {visitasFiltradas.length > 0 ? (
+                        visitasFiltradas.map((visita) => (
+                          <tr key={visita.id} className="hover:bg-gray-50">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{visita.id}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{visita.fecha}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{visita.empresa}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{visita.servicio}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">S/ {visita.monto.toFixed(2)}</td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan={5} className="px-6 py-4 text-center text-gray-500">
+                            No se encontraron registros de visitas con los filtros seleccionados
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+                
+                {/* Gráficos de análisis de visitas */}
+                {visitasFiltradas.length > 0 && (
+                  <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="bg-white p-4 rounded-lg shadow border border-gray-200">
+                      <h3 className="text-lg font-semibold mb-4 text-gray-800">Visitas por empresa</h3>
+                      <Bar data={visitasPorEmpresa} />
+                    </div>
+                    <div className="bg-white p-4 rounded-lg shadow border border-gray-200">
+                      <h3 className="text-lg font-semibold mb-4 text-gray-800">Gastos por empresa</h3>
+                      <Bar data={gastosPorEmpresa} />
+                    </div>
+                  </div>
+                )}
+              </>
+            ) : vistaSeleccionada === "editarPerfil" ? (
+              <EditarPerfil />
+            ) : vistaSeleccionada === "administrarMembresia" ? (
+              <AdministrarMembresia />
+            ) : null}
+          </div>
         </div>
-      </Modal>
-    </div>
-    <Footer />
+      </div>
+      <Footer />
     </>
   );
 };
