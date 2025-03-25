@@ -30,6 +30,7 @@ const Inicio = () => {
 
   return (
     <div className="relative w-full flex flex-col items-center justify-center px-4 md:px-8 bg-[#F7F3E9] pt-8 pb-8">
+      {/* Hero Section (existente) */}
       <div className="relative w-full max-w-7xl bg-gradient-to-r from-[#E6D6C8] via-[#D6BBA0] to-[#A67C52] bg-opacity-80 rounded-3xl p-6 md:p-12 shadow-lg overflow-hidden">
         <div className="relative flex flex-col md:flex-row gap-16">
           <div className="w-full md:w-1/2 flex flex-col justify-center space-y-8">
@@ -107,12 +108,12 @@ const Inicio = () => {
         </div>
       </div>
 
+      {/* Sección de Logos de Aliados (existente) */}
       <h2 className="text-3xl font-bold text-[#4F4A45] mt-12">
         Empresas asociadas
       </h2>
       <div className="carousel-container mt-6">
         <div className="carousel-track">
-          {/* Duplicamos las imágenes para hacer el bucle continuo */}
           {[...logos, ...logos].map((logo, index) => (
             <img
               key={index}
@@ -122,6 +123,75 @@ const Inicio = () => {
             />
           ))}
         </div>
+      </div>
+
+      {/* Nueva Sección: Beneficios Destacados */}
+      <div className="w-full max-w-7xl mt-20 px-4">
+        <h2 className="text-3xl font-bold text-[#4F4A45] mb-2 text-center">
+          ¿Por qué unirte a nuestra comunidad?
+        </h2>
+        <p className="text-lg text-[#4F4A45]/80 mb-12 text-center max-w-3xl mx-auto">
+          Más que correr, ofrecemos experiencias y beneficios diseñados para
+          potenciar tu rendimiento y estilo de vida.
+        </p>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {[
+            {
+              icon: "🏃‍♂️",
+              title: "Eventos Exclusivos",
+              description: "Carreras temáticas y talleres con expertos en running.",
+            },
+            {
+              icon: "☕",
+              title: "Descuentos en Aliados",
+              description: "Hasta 30% en cafeterías, gimnasios y tiendas deportivas.",
+            },
+            {
+              icon: "👥",
+              title: "Networking",
+              description: "Conecta con una comunidad apasionada por el deporte.",
+            },
+          ].map((item, index) => (
+            <div
+              key={index}
+              className="bg-white p-8 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 border border-[#E6D6C8]"
+            >
+              <span className="text-4xl mb-4 block">{item.icon}</span>
+              <h3 className="text-xl font-bold text-[#A67C52] mb-3">
+                {item.title}
+              </h3>
+              <p className="text-[#4F4A45]/90">{item.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Nueva Sección: CTA Final */}
+      <div className="w-full max-w-4xl mt-24 mb-16 px-6 py-12 bg-gradient-to-r from-[#E6D6C8] to-[#D6BBA0] rounded-3xl text-center">
+        <h2 className="text-3xl md:text-4xl font-bold text-[#4F4A45] mb-6">
+          ¿Listo para comenzar?
+        </h2>
+        <p className="text-lg text-[#4F4A45]/90 mb-8 max-w-2xl mx-auto">
+          Elige tu membresía y accede inmediatamente a todos los beneficios.
+        </p>
+        <Link to="/home/planes">
+          <button className="bg-[#4F4A45] hover:bg-[#3A3632] text-white font-bold py-4 px-8 rounded-full inline-flex items-center shadow-lg transition-all duration-300">
+            Ver planes de membresía
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 ml-2"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </button>
+        </Link>
       </div>
     </div>
   );

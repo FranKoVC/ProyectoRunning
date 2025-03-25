@@ -55,13 +55,13 @@ const Login: React.FC = () => {
 
       // Redirigir según el rol del usuario
       if (userRole.idRol === 3) {
-        navigate("/cliente/home/clienteinformacion");
+        navigate("/cliente/clienteinfo");
       } else if (userRole.idRol === 1) {
         navigate("/empresa/eregistrovisita");
       } else if (userRole.idRol === 2) {
         navigate("/admin/areportes");
       } else {
-        navigate("/"); // Ruta genérica si no hay un rol específico
+        navigate("/home"); // Ruta genérica si no hay un rol específico
       }
     } catch (err) {
       setLoading(false);
@@ -72,7 +72,7 @@ const Login: React.FC = () => {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-white flex items-center justify-center p-2">
         <div className="max-w-4xl w-full flex rounded-2xl shadow-lg overflow-hidden bg-white">
           {/* Imagen lateral */}
           <div className="hidden md:block w-1/2 bg-blue-900 p-8 relative">
@@ -261,7 +261,7 @@ const Login: React.FC = () => {
               <p className="text-sm text-gray-600">
                 ¿No tienes una cuenta?{" "}
                 <a
-                  href="/registro"
+                  href="/cliente/registro"
                   className="text-blue-600 hover:underline font-medium"
                 >
                   Regístrate ahora

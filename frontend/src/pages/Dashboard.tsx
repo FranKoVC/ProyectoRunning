@@ -10,7 +10,7 @@ const Menu: React.FC = () => {
       <h1 className="text-3xl font-bold text-gray-800 mb-6">Menú</h1>
       <div className="space-y-4">
         <button
-          onClick={() => navigateTo("/cliente/home")}
+          onClick={() => navigateTo("/home")}
           className="w-64 px-6 py-3 text-lg font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition duration-300"
         >
           Cliente

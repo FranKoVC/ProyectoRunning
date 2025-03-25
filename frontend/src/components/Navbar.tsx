@@ -41,13 +41,13 @@ const Navbar: React.FC = () => {
         return (
           <div className="space-y-2">
             <Link 
-              to="/empresa/eregistrovisita" 
+              to="/empresa/registrovisita" 
               className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
             >
               Registro de Visita
             </Link>
             <Link 
-              to="/empresa/egestorbeneficio" 
+              to="/empresa/adminbeneficio" 
               className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
             >
               Gestor de Beneficios
@@ -80,7 +80,7 @@ const Navbar: React.FC = () => {
       case 3: // Cliente
         return (
           <Link 
-            to="/cliente/home/clienteinformacion" 
+            to="/cliente/clienteinfo" 
             className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
           >
             Mi Cuenta
@@ -92,9 +92,9 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className="bg-white shadow-sm sticky top-0 z-50 border-b-4 border-[#b07d67] shadow-md">
+    <nav className="bg-white sticky top-0 z-50 border-b-4 border-[#b07d67] shadow-md">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <Link to="/" className="flex items-center space-x-2">
+        <Link to="/home" className="flex items-center space-x-2">
           <img 
             src={logo} 
             alt="Coffee & Running" 
@@ -107,10 +107,10 @@ const Navbar: React.FC = () => {
 
         <div className="hidden md:flex items-center space-x-6">
           <Link to="/" className="text-gray-600 hover:text-gray-900">Inicio</Link>
-          <Link to="/cliente/home/sobre-nosotros" className="text-gray-600 hover:text-gray-900">Sobre Nosotros</Link>
-          <Link to="/cliente/home/beneficios" className="text-gray-600 hover:text-gray-900">Beneficios</Link>
-          <Link to="/cliente/home/planes" className="text-gray-600 hover:text-gray-900">Planes</Link>
-          <Link to="/cliente/home/contacto" className="text-gray-600 hover:text-gray-900">Contacto</Link>
+          <Link to="/home/sobre-nosotros" className="text-gray-600 hover:text-gray-900">Sobre Nosotros</Link>
+          <Link to="/home/beneficios" className="text-gray-600 hover:text-gray-900">Beneficios</Link>
+          <Link to="/home/planes" className="text-gray-600 hover:text-gray-900">Planes</Link>
+          <Link to="/home/contacto" className="text-gray-600 hover:text-gray-900">Contacto</Link>
 
           <div className="relative">
             <button 
@@ -141,7 +141,7 @@ const Navbar: React.FC = () => {
                       Iniciar Sesión
                     </Link>
                     <Link
-                      to="/cliente/home/registro"
+                      to="/cliente/registro"
                       className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
                     >
                       Registrarte
