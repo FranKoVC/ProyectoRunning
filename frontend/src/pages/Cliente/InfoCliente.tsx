@@ -522,7 +522,6 @@ const InfoCliente = () => {
                     <label className="block text-sm font-medium text-gray-700 mb-1">Rango de fechas de visita</label>
                     <div className="grid grid-cols-2 gap-2">
                       <div>
-                        <label className="block text-xs text-gray-500">Desde</label>
                         <input
                           type="date"
                           name="fechaInicio"
@@ -532,7 +531,6 @@ const InfoCliente = () => {
                         />
                       </div>
                       <div>
-                        <label className="block text-xs text-gray-500">Hasta</label>
                         <input
                           type="date"
                           name="fechaFin"

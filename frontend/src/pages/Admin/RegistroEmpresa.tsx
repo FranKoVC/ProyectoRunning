@@ -94,7 +94,7 @@ const RegistroEmpresa = () => {
                     type="submit"
                     className="w-full bg-[#922D26] text-white py-3 rounded-md font-bold mt-4 hover:bg-[#7a2520]"
                   >
-                    Siguiente
+                    Registrar
                   </button>
                 </Link>
               </form>

@@ -57,7 +57,7 @@ const Login: React.FC = () => {
       if (userRole.idRol === 3) {
         navigate("/cliente/clienteinfo");
       } else if (userRole.idRol === 1) {
-        navigate("/empresa/eregistrovisita");
+        navigate("/empresa/registrovisita");
       } else if (userRole.idRol === 2) {
         navigate("/admin/areportes");
       } else {

@@ -5,6 +5,7 @@ import { FaUserPlus, FaCheckCircle, FaRunning, FaQuestionCircle } from "react-ic
 import { IoMdPricetag } from "react-icons/io";
 import { GiRunningShoe } from "react-icons/gi";
 import { FaTshirt, FaTicketAlt, FaUsers } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Planes: React.FC = () => {
   const beneficios = [
@@ -51,9 +52,11 @@ const Planes: React.FC = () => {
                 </li>
               ))}
             </ul>
+            <Link to="/cliente/registro">
             <button className="w-full bg-[#A67C52] hover:bg-[#8B6B45] text-white font-bold py-4 px-6 rounded-lg transition-colors group-hover:shadow-md">
               Elegir este plan
             </button>
+            </Link>
           </div>
 
           {/* Plan Anual */}
@@ -79,9 +82,11 @@ const Planes: React.FC = () => {
                 </li>
               ))}
             </ul>
-            <button className="w-full bg-[#4F4A45] hover:bg-[#3A3632] text-white font-bold py-4 px-6 rounded-lg transition-colors group-hover:shadow-md">
+            <Link to="/cliente/registro">
+            <button className="w-full bg-[#A67C52] hover:bg-[#8B6B45] text-white font-bold py-4 px-6 rounded-lg transition-colors group-hover:shadow-md">
               Elegir este plan
             </button>
+            </Link>
           </div>
         </div>
       </div>

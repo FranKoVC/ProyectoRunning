@@ -46,7 +46,7 @@ const Inicio = () => {
             </p>
             <div className="flex md:flex-row w-full items-center mt-6 space-y-6 md:space-y-0 md:space-x-6">
               <Link
-                to="/cliente/home/registro"
+                to="/cliente/registro"
                 className="flex items-center whitespace-nowrap"
               >
                 <button className="bg-[#A67C52] hover:bg-[#8B6B45] text-white font-bold py-4 px-6 rounded-full flex items-center shadow-md transition-all duration-300">

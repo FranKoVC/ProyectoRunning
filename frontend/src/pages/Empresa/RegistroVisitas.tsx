@@ -136,12 +136,6 @@ const RegistroVisita = () => {
                         <p>Última visita: {cliente.ultimaVisita}</p>
                       </div>
                     )}
-                    {cliente.puntos && (
-                      <div className="flex items-center gap-2">
-                        <Info className="w-5 h-5" />
-                        <p>Puntos acumulados: {cliente.puntos}</p>
-                      </div>
-                    )}
                   </div>
                   
                   <h3 className="font-bold text-lg mb-2">Beneficios disponibles:</h3>

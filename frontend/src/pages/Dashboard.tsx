@@ -16,7 +16,7 @@ const Menu: React.FC = () => {
           Cliente
         </button>
         <button
-          onClick={() => navigateTo("/empresa/eregistrovisita")}
+          onClick={() => navigateTo("/empresa/registrovisita")}
           className="w-64 px-6 py-3 text-lg font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition duration-300"
         >
           Empresa

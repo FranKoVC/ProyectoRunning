@@ -71,7 +71,7 @@ const Registro = () => {
                   placeholder="Fecha de Nacimiento"
                   className="w-full p-3 bg-white border border-white rounded-md"
                 />
-                <Link to="/cliente/home/pago">
+                <Link to="/cliente/pago">
                   <button
                     type="submit"
                     className="w-full bg-[#922D26] text-white py-3 rounded-md font-bold mt-4 hover:bg-[#7a2520]"
