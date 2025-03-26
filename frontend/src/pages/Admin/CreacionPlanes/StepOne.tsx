@@ -125,19 +125,6 @@ const StepOne: React.FC<StepOneProps> = ({ planData, updatePlanData }) => {
               <option value="premium">Premium</option>
             </select>
           </div>
-          <div>
-            <label htmlFor="color" className="block text-sm font-medium text-gray-700 mb-1">
-              Color del Plan
-            </label>
-            <input
-              type="color"
-              id="color"
-              name="color"
-              value={planData.color}
-              onChange={handleBasicInfoChange}
-              className="w-full p-1 border rounded h-10"
-            />
-          </div>
         </div>
       </div>
       
@@ -168,7 +155,7 @@ const StepOne: React.FC<StepOneProps> = ({ planData, updatePlanData }) => {
                 onClick={() => toggleEmpresa(empresa)}
                 className={`flex items-center justify-between p-3 mb-2 rounded cursor-pointer ${
                   planData.empresas.some(e => e.id === empresa.id)
-                    ? "bg-red-100 border border-red-300"
+                    ? "bg-gray-200 border bg-gray-500"
                     : "bg-gray-50 hover:bg-gray-100 border"
                 }`}
               >
@@ -183,7 +170,7 @@ const StepOne: React.FC<StepOneProps> = ({ planData, updatePlanData }) => {
                 </div>
                 <div className="w-6 h-6 rounded-full border flex items-center justify-center">
                   {planData.empresas.some(e => e.id === empresa.id) && (
-                    <div className="w-4 h-4 bg-red-600 rounded-full"></div>
+                    <div className="w-4 h-4 bg-gray-600 rounded-full"></div>
                   )}
                 </div>
               </div>

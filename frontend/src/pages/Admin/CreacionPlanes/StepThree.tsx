@@ -121,24 +121,7 @@ const StepThree: React.FC<StepThreeProps> = ({ planData, updatePlanData }) => {
               placeholder="Breve descripción del beneficio"
             />
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Ícono
-            </label>
-            <div className="flex flex-wrap gap-2">
-              {iconosDisponibles.map(icono => (
-                <div 
-                  key={icono}
-                  onClick={() => setSelectedIcono(icono)}
-                  className={`w-10 h-10 flex items-center justify-center border rounded cursor-pointer ${
-                    selectedIcono === icono ? "bg-red-100 border-red-500" : "bg-white"
-                  }`}
-                >
-                  <FaStar className={selectedIcono === icono ? "text-red-500" : "text-gray-400"} />
-                </div>
-              ))}
-            </div>
-          </div>
+          
           <button
             onClick={handleAddBeneficio}
             className="flex items-center justify-center px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"

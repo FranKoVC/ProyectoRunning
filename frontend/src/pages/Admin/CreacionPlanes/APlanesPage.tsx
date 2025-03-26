@@ -89,7 +89,7 @@ const APlanesPage: React.FC = () => {
             <h1 className="text-3xl font-bold text-gray-800">Gestión de Planes</h1>
             <Link 
               to="/admin/planes/nuevo"
-              className="flex items-center px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+              className="flex items-center px-4 py-2 bg-gray-500 text-white rounded hover:bg-red-700"
             >
               <FaPlus className="mr-2" /> Crear Nuevo Plan
             </Link>
@@ -102,12 +102,12 @@ const APlanesPage: React.FC = () => {
           ) : planes.length === 0 ? (
             <div className="bg-white p-8 rounded-lg shadow text-center">
               <p className="text-gray-600 mb-4">No hay planes disponibles</p>
-              <Link 
+                <Link 
                 to="/admin/planes/nuevo"
-                className="inline-flex items-center px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-              >
+                className="inline-flex items-center px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
+                >
                 <FaPlus className="mr-2" /> Crear Primer Plan
-              </Link>
+                </Link>
             </div>
           ) : (
             <div className="bg-white rounded-lg shadow overflow-hidden">

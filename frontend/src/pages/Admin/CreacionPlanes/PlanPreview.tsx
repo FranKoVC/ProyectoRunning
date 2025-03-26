@@ -11,7 +11,7 @@ const PlanPreview: React.FC<PlanPreviewProps> = ({ planData }) => {
 
   // Formatear el precio según la duración
   const formatearPrecio = () => {
-    return `S/ ${precio} ${duracion === "mensual" ? "/ mes" : "/ año"}`;
+    return `S/${precio} ${duracion === "mensual" ? "  - Mensual" : "  - Anual"}`;
   };
 
   return (
@@ -23,7 +23,7 @@ const PlanPreview: React.FC<PlanPreviewProps> = ({ planData }) => {
       >
         <h3 className="text-2xl font-bold mb-2">{nombre || "Nuevo Plan"}</h3>
         <div className="text-3xl font-bold mb-2">{formatearPrecio()}</div>
-        <div className="inline-block px-4 py-1 bg-white bg-opacity-20 rounded-full text-sm font-medium uppercase">
+        <div className="inline-block px-4 py-1 bg-black bg-opacity-20 rounded-full text-sm font-medium uppercase">
           {tipo === "basico" ? "Plan Básico" : "Plan Premium"}
         </div>
       </div>
