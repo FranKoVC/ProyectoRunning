@@ -1,0 +1,25 @@
+# Ignorar node_modules
+node_modules/
+
+# Ignorar archivos de entorno
+.env
+.env.local
+
+# Ignorar archivos de compilación
+dist/
+build/
+
+# Ignorar archivos de IDE
+.vscode/
+.idea/
+
+# Ignorar archivos de npm/yarn
+package-lock.json
+yarn.lock
+
+# Ignorar archivos de logs
+*.log
+logs/
+
+# Ignorar archivos de sistema
+.DS_Store
