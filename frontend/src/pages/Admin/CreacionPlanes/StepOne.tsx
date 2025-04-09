@@ -155,7 +155,7 @@ const StepOne: React.FC<StepOneProps> = ({ planData, updatePlanData }) => {
                 onClick={() => toggleEmpresa(empresa)}
                 className={`flex items-center justify-between p-3 mb-2 rounded cursor-pointer ${
                   planData.empresas.some(e => e.id === empresa.id)
-                    ? "bg-gray-200 border bg-gray-500"
+                    ? "border bg-gray-500"
                     : "bg-gray-50 hover:bg-gray-100 border"
                 }`}
               >

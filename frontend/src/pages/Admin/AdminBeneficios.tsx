@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import TablaBeneficios from "../../components/TablaBeneficios";
@@ -68,9 +67,9 @@ const beneficiosEjemplo: Beneficio[] = [
 ];
 
 const AdminBeneficios: React.FC = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [beneficios, setBeneficios] = useState<Beneficio[]>(beneficiosEjemplo);
-  const [empresas, setEmpresas] = useState<Empresa[]>(empresasEjemplo);
+  const [empresas] = useState<Empresa[]>(empresasEjemplo);
   const [modo, setModo] = useState<'lista' | 'crear' | 'editar'>('lista');
   const [beneficioSeleccionado, setBeneficioSeleccionado] = useState<Beneficio | null>(null);
 
