@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { Administrador } from './entities/Administrador';
 import { Cliente } from './entities/Cliente';
 import { Empresa } from './entities/Empresa';
@@ -29,32 +30,43 @@ import { TipopagoModule } from './tipopago/tipopago.module';
 import { UsuarioModule } from './usuario/usuario.module';
 import { VisitaModule } from './visita/visita.module';
 import { AuthModule } from './auth/auth.module';
+import * as crypto from 'crypto';
+
+// Polyfill para crypto (añade esto al inicio del archivo)
+global.crypto = {
+  randomUUID: () => crypto.randomUUID()
+} as any;
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres', // Tipo de base de datos
-      host: 'localhost', // Host de la base de datos
-      port: 5432, // Puerto de PostgreSQL (por defecto es 5432)
-      username: 'postgres', // Usuario de la base de datos
-      password: 'password', // contrasena del usuario
-      database: 'ClubCoffee',// Nombre de la base de datos
-      entities: [
-        Administrador,
-        Cliente,
-        Empresa,
-        EmpresaBeneficio,
-        PlanBeneficio,
-        Rol,
-        Usuario,
-        Visita,
-        Membresia,
-        Pagos,
-        TipoPago,
-        Plan,
-        Permiso,
-      ], // Entidades de TypeORM (las veremos más adelante)
-      synchronize: false, // Sincroniza automáticamente las entidades con la base de datos (solo para desarrollo)
+    ConfigModule.forRoot({ isGlobal: true }), // Habilita el uso de variables de entorno
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (config: ConfigService) => ({
+        type: 'postgres',
+        url: config.get('DATABASE_URL'),
+        ssl: config.get('NODE_ENV') === 'production' ? { 
+          rejectUnauthorized: false 
+        } : false,
+        entities: [
+          Administrador,
+          Cliente,
+          Empresa,
+          EmpresaBeneficio,
+          PlanBeneficio,
+          Rol,
+          Usuario,
+          Visita,
+          Membresia,
+          Pagos,
+          TipoPago,
+          Plan,
+          Permiso,
+        ],
+        synchronize: config.get('NODE_ENV') !== 'production', // Solo en desarrollo
+        logging: true, // Habilita logs de SQL (opcional)
+      }),
+      inject: [ConfigService],
     }),
     AdministradorModule,
     ClienteModule,

@@ -164,24 +164,6 @@ const Contacto = () => {
         </div>
       </div>
 
-      {/* Mapa */}
-      <div className="px-6 pb-16 max-w-7xl mx-auto">
-        <div className="bg-white p-6 rounded-2xl shadow-lg">
-          <h3 className="text-xl font-bold text-[#4F4A45] mb-4">Encuéntranos</h3>
-          <div className="aspect-w-16 aspect-h-9 bg-gray-200 rounded-lg overflow-hidden">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31533.536720190723!2d-79.039929!3d-8.111942!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zOMKwMDYnNDMuMCJTIDc5wrAwMicxOS4xIlc!5e0!3m2!1ses!2spe!4v1620000000000!5m2!1ses!2spe"
-              width="100%"
-              height="400"
-              style={{ border: 0 }}
-              allowFullScreen
-              loading="lazy"
-              className="rounded-lg"
-            ></iframe>
-          </div>
-        </div>
-      </div>
-
       <Footer />
     </div>
   );
