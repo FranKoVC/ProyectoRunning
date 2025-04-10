@@ -13,15 +13,15 @@ import locoburguer from "../../images/locoburguer.jpg";
 import tostaduria from "../../images/tostaduria.png";
 
 const beneficios = [
-  { id: 1, nombre: "CLUB TTT", categoria: "Gimnasio", descuento: "Descuento en Planes", imagen: clubttt, ruta: "/cliente/home/beneficios/clubttt" },
-  { id: 2, nombre: "FISIOPRO", categoria: "Salud", descuento: "25% de Descuento", imagen: fisioterapia, ruta: "/cliente/home/beneficios/fisioterapia" },
-  { id: 3, nombre: "QORE", categoria: "Salud", descuento: "Descuento en Sesiones", imagen: estabilidad, ruta: "/cliente/home/beneficios/estabilidad" },
-  { id: 4, nombre: "PALO SANTO", categoria: "Suplementos", descuento: "10% de Descuento", imagen: hidratacion, ruta: "/cliente/home/beneficios/hidratacion" },
-  { id: 5, nombre: "MAFER MARTÍN", categoria: "Nutrición", descuento: "25% de Descuento", imagen: nutricion, ruta: "/cliente/home/beneficios/nutricion" },
-  { id: 6, nombre: "NUNO CAFÉ", categoria: "Cafetería", descuento: "15% de Descuento", imagen: nunocafeteria, ruta: "/cliente/home/beneficios/nunocafeteria" },
-  { id: 7, nombre: "CAFFEINE", categoria: "Cafetería", descuento: "15% de Descuento", imagen: caffeine, ruta: "/cliente/home/beneficios/caffeine" },
-  { id: 8, nombre: "LOCO BURGUER", categoria: "Hamburguesería", descuento: "20% de Descuento", imagen: locoburguer, ruta: "/cliente/home/beneficios/locoburguer" },
-  { id: 9, nombre: "TOSTADURÍA", categoria: "Cafetería", descuento: "10% de Descuento", imagen: tostaduria, ruta: "/cliente/home/beneficios/tostaduria" },
+  { id: 1, nombre: "CLUB TTT", categoria: "Gimnasio", descuento: "Descuento en Planes", imagen: clubttt, ruta: "/home/beneficios/clubttt" },
+  { id: 2, nombre: "FISIOPRO", categoria: "Salud", descuento: "25% de Descuento", imagen: fisioterapia, ruta: "/home/beneficios/fisioterapia" },
+  { id: 3, nombre: "QORE", categoria: "Salud", descuento: "Descuento en Sesiones", imagen: estabilidad, ruta: "/home/beneficios/estabilidad" },
+  { id: 4, nombre: "PALO SANTO", categoria: "Suplementos", descuento: "10% de Descuento", imagen: hidratacion, ruta: "/home/beneficios/hidratacion" },
+  { id: 5, nombre: "MAFER MARTÍN", categoria: "Nutrición", descuento: "25% de Descuento", imagen: nutricion, ruta: "/home/beneficios/nutricion" },
+  { id: 6, nombre: "NUNO CAFÉ", categoria: "Cafetería", descuento: "15% de Descuento", imagen: nunocafeteria, ruta: "/home/beneficios/nunocafeteria" },
+  { id: 7, nombre: "CAFFEINE", categoria: "Cafetería", descuento: "15% de Descuento", imagen: caffeine, ruta: "/home/beneficios/caffeine" },
+  { id: 8, nombre: "LOCO BURGUER", categoria: "Hamburguesería", descuento: "20% de Descuento", imagen: locoburguer, ruta: "/home/beneficios/locoburguer" },
+  { id: 9, nombre: "TOSTADURÍA", categoria: "Cafetería", descuento: "10% de Descuento", imagen: tostaduria, ruta: "/home/beneficios/tostaduria" },
 ];
 
 const categorias = ["Todos", ...new Set(beneficios.map((b) => b.categoria))];

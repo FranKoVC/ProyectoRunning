@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Beneficio, Empresa } from '../pages/Empresa/AdminBeneficios';
+import { Beneficio, Empresa } from '../pages/Admin/AdminBeneficios';
 import PreviewBeneficio from './PreviewBeneficio';
 
 interface FormularioBeneficioProps {

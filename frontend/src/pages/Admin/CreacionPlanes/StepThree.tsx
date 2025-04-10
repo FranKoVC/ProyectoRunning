@@ -26,9 +26,6 @@ const StepThree: React.FC<StepThreeProps> = ({ planData, updatePlanData }) => {
   });
 
   // Lista de iconos disponibles para beneficios
-  const iconosDisponibles = [
-    "estrella", "trofeo", "medalla", "regalo", "descuento", "calendario", "ticket", "corazon"
-  ];
   const [selectedIcono, setSelectedIcono] = useState("estrella");
 
   const handleAddBeneficio = () => {

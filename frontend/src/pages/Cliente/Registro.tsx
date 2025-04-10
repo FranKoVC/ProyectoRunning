@@ -7,6 +7,23 @@ import { Link } from "react-router-dom";
 const Registro = () => {
   const [tipoDocumento, setTipoDocumento] = useState("");
   const [documento, setDocumento] = useState("");
+  const [, setFotoPerfil] = useState<File | null>(null);
+  const [previewFoto, setPreviewFoto] = useState<string | null>(null);
+
+  const handleFotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files[0]) {
+      const file = files[0];
+      setFotoPerfil(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (typeof reader.result === "string") {
+          setPreviewFoto(reader.result);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -20,6 +37,30 @@ const Registro = () => {
 
             <div className="mt-6 w-full max-w-md">
               <form className="mt-4 space-y-4">
+                {/* Campo para foto de perfil */}
+                <div className="flex flex-col items-center mb-4">
+                  <label className="text-[#922D26] font-medium mb-2">Foto de Perfil</label>
+                  <div className="w-32 h-32 rounded-full bg-white flex items-center justify-center overflow-hidden mb-2 border-2 border-[#922D26]">
+                    {previewFoto ? (
+                      <img src={previewFoto} alt="Vista previa" className="w-full h-full object-cover" />
+                    ) : (
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                      </svg>
+                    )}
+                  </div>
+                  <label htmlFor="foto-perfil" className="bg-[#922D26] text-white py-2 px-4 rounded-md font-medium cursor-pointer hover:bg-[#7a2520]">
+                    Seleccionar foto
+                  </label>
+                  <input
+                    id="foto-perfil"
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleFotoChange}
+                  />
+                </div>
+
                 <label className="text-[#922D26] font-medium">Tipo de Documento</label>
                 <select
                   className="w-full p-3 border border-white rounded-md bg-white text-gray-700 font-semibold"

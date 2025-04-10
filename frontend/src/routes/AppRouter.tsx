@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 
 import Home from "../components/Home";
 
@@ -6,6 +6,7 @@ import AReportes from "../pages/Admin/Reportes";
 import APlanesPage from "../pages/Admin/CreacionPlanes/APlanesPage";
 import ACrearPlan from "../pages/Admin/CreacionPlanes/CrearPlan";
 import ARegistroEmpresa from "../pages/Admin/RegistroEmpresa";
+import AAdminBeneficio from "../pages/Admin/AdminBeneficios";
 
 import Contacto from "../pages/Todos/Contacto";
 import Beneficios from "../pages/Todos/Beneficios";
@@ -19,7 +20,6 @@ import ClientePago from "../pages/Cliente/PagoVoucher";
 import ClienteInfo from "../pages/Cliente/InfoCliente";
 
 import ERegistroVisita from "../pages/Empresa/RegistroVisitas";
-import EAdminBeneficio from "../pages/Empresa/AdminBeneficios";
 
 
 import Login from "../pages/Auth/Login";
@@ -43,6 +43,7 @@ const AppRouter = () => {
         <Route path="/admin/planes" element={<APlanesPage />} />
         <Route path="/admin/planes/nuevo" element={<ACrearPlan />} />
         <Route path="/admin/planes/editar/:id" element={<ACrearPlan />} />
+        <Route path="/admin/adminbeneficio" element={<AAdminBeneficio/>} />
 
         {/* Rutas para Cliente */}
         <Route path="/cliente/registro" element={<ClienteRegistro />} />
@@ -51,7 +52,6 @@ const AppRouter = () => {
 
         {/* Rutas para Empresa */}
         <Route path="/empresa/registrovisita" element={<ERegistroVisita />} />
-        <Route path="/empresa/adminbeneficio" element={<EAdminBeneficio/>} />
 
         {/* Rutas para Autenticación */}
         <Route path="/login" element={<Login />} />

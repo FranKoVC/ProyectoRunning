@@ -1,5 +1,5 @@
 import React from 'react';
-import { Beneficio } from '../pages/Empresa/AdminBeneficios';
+import { Beneficio } from '../pages/Admin/AdminBeneficios';
 
 interface TablaBeneficiosProps {
   beneficios: Beneficio[];

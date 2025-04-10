@@ -27,6 +27,7 @@ const PagoVoucher = () => {
   const [tipoPago, setTipoPagoState] = useState<string>("");
   const [voucher, setVoucher] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
+  const [monto, setMonto] = useState<string>("");
 
   const calcularVigencia = (): string => {
     const plan = planes.find((p) => p.title === planSeleccionado);
@@ -60,7 +61,7 @@ const PagoVoucher = () => {
   };
 
   const registrarPago = () => {
-    if(!planSeleccionado || !voucher || !numeroOperacion) return;
+    if(!planSeleccionado || !voucher || !numeroOperacion || !monto) return;
     alert(`Voucher de pago enviado para validación`);
     setPlanSeleccionado("");
   }
@@ -157,6 +158,17 @@ const PagoVoucher = () => {
               placeholder="Ingrese el número de operación"
               value={numeroOperacion}
               onChange={(e) => setNumeroOperacion(e.target.value)}
+            />
+          </div>
+
+          <div className="mt-6">
+            <label className="block text-[#922D26] font-medium mb-2">Monto</label>
+            <input
+              type="text"
+              className="w-full p-3 border border-gray-300 rounded-md"
+              placeholder="Ingrese el monto"
+              value={monto}
+              onChange={(e) => setMonto(e.target.value)}
             />
           </div>
 

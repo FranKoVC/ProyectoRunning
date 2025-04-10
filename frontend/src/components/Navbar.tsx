@@ -46,12 +46,6 @@ const Navbar: React.FC = () => {
             >
               Registro de Visita
             </Link>
-            <Link 
-              to="/empresa/adminbeneficio" 
-              className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-            >
-              Gestor de Beneficios
-            </Link>
           </div>
         );
       case 2: // Admin
@@ -75,6 +69,12 @@ const Navbar: React.FC = () => {
             >
               Registro Plan
             </Link>
+            <Link 
+              to="/admin/adminbeneficio" 
+              className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+            >
+              Gestor de Beneficios
+            </Link>
           </div>
         );
       case 3: // Cliente
@@ -94,7 +94,7 @@ const Navbar: React.FC = () => {
   return (
     <nav className="bg-white sticky top-0 z-50 border-b-4 border-[#b07d67] shadow-md">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <Link to="/home" className="flex items-center space-x-2">
+        <Link to="/" className="flex items-center space-x-2">
           <img 
             src={logo} 
             alt="Coffee & Running" 

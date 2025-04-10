@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { FaFacebookF, FaInstagram, FaLinkedinIn } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import img1 from "../images/img1.jpg";
-import img2 from "../images/img2.png";
-import img3 from "../images/img3.png";
+import img2 from "../images/img2.jpg";
+import img3 from "../images/img3.jpg";
 import logo1 from "../images/logo1.png";
 import logo2 from "../images/logo2.png";
 import logo3 from "../images/logo3.jpg";
@@ -122,6 +122,86 @@ const Inicio = () => {
               className="object-contain"
             />
           ))}
+        </div>
+      </div>
+
+      {/* Nueva Sección: Noticias */}
+      <div className="w-full max-w-7xl mt-20 px-4">
+        <h2 className="text-3xl font-bold text-[#4F4A45] mb-2 text-center">
+          Últimas Noticias
+        </h2>
+        <p className="text-lg text-[#4F4A45]/80 mb-12 text-center max-w-3xl mx-auto">
+          Mantente informado de nuestros eventos, tips y todo lo relacionado con la comunidad Coffee & Running.
+        </p>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {[
+            {
+              date: "12 ABR 2025",
+              title: "Maratón Café & Montaña",
+              description: "Inscripciones abiertas para nuestra carrera anual en las alturas de Huaraz. ¡Cupos limitados!",
+              image: img1,
+            },
+            {
+              date: "08 ABR 2025",
+              title: "Workshop: Nutrición para corredores",
+              description: "Este sábado, aprende sobre los mejores alimentos para optimizar tu rendimiento con la nutricionista Ana López.",
+              image: img2,
+            },
+            {
+              date: "01 ABR 2025",
+              title: "Nueva cafetería aliada: Bean Lovers",
+              description: "Disfruta de un 25% de descuento presentando tu membresía en cualquiera de sus 3 locales en Lima.",
+              image: img3,
+            },
+          ].map((item, index) => (
+            <div
+              key={index}
+              className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
+            >
+              <div className="relative h-48">
+                <div className="absolute top-0 left-0 bg-[#A67C52] text-white px-4 py-1 rounded-br-lg font-medium">
+                  {item.date}
+                </div>
+                <img 
+                  src={item.image} 
+                  alt={item.title}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = "/src/images/placeholder.jpg";
+                  }}
+                />
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-bold text-[#4F4A45] mb-3">
+                  {item.title}
+                </h3>
+                <p className="text-[#4F4A45]/90 mb-4">{item.description}</p>
+                <Link to="/noticias" className="text-[#A67C52] font-semibold hover:text-[#8B6B45] inline-flex items-center">
+                  Leer más
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4 ml-1"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="flex justify-center mt-10">
+          <Link to="/noticias">
+            <button className="bg-transparent hover:bg-[#A67C52] text-[#A67C52] hover:text-white border border-[#A67C52] font-bold py-3 px-6 rounded-full transition-all duration-300">
+              Ver todas las noticias
+            </button>
+          </Link>
         </div>
       </div>
 
