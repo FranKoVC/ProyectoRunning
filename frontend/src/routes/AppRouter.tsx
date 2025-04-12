@@ -4,7 +4,12 @@ import Home from "../components/Home";
 
 import AReportes from "../pages/Admin/Reportes";
 import APlanesPage from "../pages/Admin/CreacionPlanes/APlanesPage";
-import ACrearPlan from "../pages/Admin/CreacionPlanes/CrearPlan";
+import AEditarPlanModal from "../pages/Admin/CreacionPlanes/EditarPlanModal";
+import AVerPlanModal from "../pages/Admin/CreacionPlanes/VerPlanModal";
+
+
+
+
 import ARegistroEmpresa from "../pages/Admin/RegistroEmpresa";
 import AAdminBeneficio from "../pages/Admin/AdminBeneficios";
 
@@ -41,9 +46,6 @@ const AppRouter = () => {
         <Route path="/admin/areportes" element={<AReportes />} />
         <Route path="/admin/aregistroempresa" element={<ARegistroEmpresa />} />
         <Route path="/admin/planes" element={<APlanesPage />} />
-        <Route path="/admin/planes/nuevo" element={<ACrearPlan />} />
-        <Route path="/admin/planes/editar/:id" element={<ACrearPlan />} />
-        <Route path="/admin/adminbeneficio" element={<AAdminBeneficio/>} />
 
         {/* Rutas para Cliente */}
         <Route path="/cliente/registro" element={<ClienteRegistro />} />
