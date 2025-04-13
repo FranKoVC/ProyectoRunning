@@ -30,16 +30,10 @@ import { TipopagoModule } from './tipopago/tipopago.module';
 import { UsuarioModule } from './usuario/usuario.module';
 import { VisitaModule } from './visita/visita.module';
 import { AuthModule } from './auth/auth.module';
-import * as crypto from 'crypto';
-
-// Polyfill para crypto (añade esto al inicio del archivo)
-global.crypto = {
-  randomUUID: () => crypto.randomUUID()
-} as any;
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }), // Habilita el uso de variables de entorno
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (config: ConfigService) => ({
@@ -63,8 +57,8 @@ global.crypto = {
           Plan,
           Permiso,
         ],
-        synchronize: config.get('NODE_ENV') !== 'production', // Solo en desarrollo
-        logging: true, // Habilita logs de SQL (opcional)
+        synchronize: false,
+        logging: false,
       }),
       inject: [ConfigService],
     }),

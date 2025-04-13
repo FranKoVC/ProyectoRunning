@@ -13,15 +13,15 @@ import locoburguer from "../../images/locoburguer.jpg";
 import tostaduria from "../../images/tostaduria.png";
 
 const beneficios = [
-  { id: 1, nombre: "CLUB TTT", categoria: "Gimnasio", descuento: "Descuento en Planes", imagen: clubttt, ruta: "/home/beneficios/clubttt" },
-  { id: 2, nombre: "FISIOPRO", categoria: "Salud", descuento: "25% de Descuento", imagen: fisioterapia, ruta: "/home/beneficios/fisioterapia" },
-  { id: 3, nombre: "QORE", categoria: "Salud", descuento: "Descuento en Sesiones", imagen: estabilidad, ruta: "/home/beneficios/estabilidad" },
-  { id: 4, nombre: "PALO SANTO", categoria: "Suplementos", descuento: "10% de Descuento", imagen: hidratacion, ruta: "/home/beneficios/hidratacion" },
-  { id: 5, nombre: "MAFER MARTÍN", categoria: "Nutrición", descuento: "25% de Descuento", imagen: nutricion, ruta: "/home/beneficios/nutricion" },
-  { id: 6, nombre: "NUNO CAFÉ", categoria: "Cafetería", descuento: "15% de Descuento", imagen: nunocafeteria, ruta: "/home/beneficios/nunocafeteria" },
-  { id: 7, nombre: "CAFFEINE", categoria: "Cafetería", descuento: "15% de Descuento", imagen: caffeine, ruta: "/home/beneficios/caffeine" },
-  { id: 8, nombre: "LOCO BURGUER", categoria: "Hamburguesería", descuento: "20% de Descuento", imagen: locoburguer, ruta: "/home/beneficios/locoburguer" },
-  { id: 9, nombre: "TOSTADURÍA", categoria: "Cafetería", descuento: "10% de Descuento", imagen: tostaduria, ruta: "/home/beneficios/tostaduria" },
+  { id: 1, nombre: "CLUB TTT", categoria: "Gimnasio", descuento: "Descuento en Planes de Entrenamiento", imagen: clubttt, ruta: "/home/beneficios/clubttt" },
+  { id: 2, nombre: "FISIOPRO", categoria: "Salud", descuento: "Descuento en Paquetes y Más", imagen: fisioterapia, ruta: "/home/beneficios/fisioterapia" },
+  { id: 3, nombre: "QORE", categoria: "Salud", descuento: "Descuento en Paquetes de Clases", imagen: estabilidad, ruta: "/home/beneficios/estabilidad" },
+  { id: 4, nombre: "PALO SANTO", categoria: "Suplementos", descuento: "Descuento en geles e hidratación", imagen: hidratacion, ruta: "/home/beneficios/hidratacion" },
+  { id: 5, nombre: "MAFER MARTÍN", categoria: "Nutrición", descuento: "Descuento en paquetes nutricionales", imagen: nutricion, ruta: "/home/beneficios/nutricion" },
+  { id: 6, nombre: "NUNO CAFÉ", categoria: "Cafetería", descuento: "Descuento en toda la carta", imagen: nunocafeteria, ruta: "/home/beneficios/nunocafeteria" },
+  { id: 7, nombre: "CAFFEINE", categoria: "Cafetería", descuento: "Descuento en toda la carta", imagen: caffeine, ruta: "/home/beneficios/caffeine" },
+  { id: 8, nombre: "LOCO BURGUER", categoria: "Hamburguesería", descuento: "Descuento en hamburguesas", imagen: locoburguer, ruta: "/home/beneficios/locoburguer" },
+  { id: 9, nombre: "TOSTADURÍA", categoria: "Cafetería", descuento: "Descuento en toda la carta", imagen: tostaduria, ruta: "/home/beneficios/tostaduria" },
 ];
 
 const categorias = ["Todos", ...new Set(beneficios.map((b) => b.categoria))];
@@ -29,22 +29,14 @@ const categorias = ["Todos", ...new Set(beneficios.map((b) => b.categoria))];
 const Beneficio = () => {
   const navigate = useNavigate();
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("Todos");
+  const token = localStorage.getItem("access_token");
 
   const beneficiosFiltrados = categoriaSeleccionada === "Todos"
     ? beneficios
     : beneficios.filter((b) => b.categoria === categoriaSeleccionada);
 
   const handleVerBeneficio = (ruta: string) => {
-    // Verificar si el usuario está autenticado (tiene token en localStorage)
-    const token = localStorage.getItem("access_token");
-    
-    if (token) {
-      // Usuario autenticado, navegar a la ruta del beneficio
-      navigate(ruta);
-    } else {
-      // Usuario no autenticado, redirigir al login
-      navigate("/login");
-    }
+    navigate(ruta);
   };
 
   return (
@@ -74,12 +66,14 @@ const Beneficio = () => {
                 <h2 className="text-xl font-bold">{beneficio.descuento}</h2>
                 <h3 className="text-lg font-bold">{beneficio.nombre}</h3>
                 <h4 className="text-md font-bold">{beneficio.categoria}</h4>
-                <button
-                  className="mt-3 bg-red-700 text-white px-3 py-2 rounded transition-all duration-300 hover:bg-red-600 active:scale-95"
-                  onClick={() => handleVerBeneficio(beneficio.ruta)}
-                >
-                  Ver beneficio →
-                </button>
+                {token && (
+                  <button
+                    className="mt-3 bg-red-700 text-white px-3 py-2 rounded transition-all duration-300 hover:bg-red-600 active:scale-95"
+                    onClick={() => handleVerBeneficio(beneficio.ruta)}
+                  >
+                    Ver beneficios →
+                  </button>
+                )}
               </div>
             </div>
           ))}
