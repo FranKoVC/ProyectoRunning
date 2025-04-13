@@ -6,6 +6,7 @@ import { FaPlus, FaEdit, FaTrash, FaEye } from "react-icons/fa";
 import CrearPlanModal from "./CrearPlanModal";
 import VerPlanModal from "./VerPlanModal";
 import EditarPlanModal from "./EditarPlanModal";
+import { AnimatePresence } from "framer-motion";
 
 export interface Beneficio {
   id: string;
@@ -176,7 +177,7 @@ const APlanesPage: React.FC = () => {
   return (
     <>
       <Navbar />
-      <div className="bg-gray-100 min-h-screen py-8">
+      <div className="bg-gray-100 min-h-screen py-8 relative">
         <div className="container mx-auto">
           <div className="flex justify-between items-center mb-6">
             <h1 className="text-3xl font-bold text-gray-800">Gestión de Planes</h1>
@@ -312,27 +313,48 @@ const APlanesPage: React.FC = () => {
       </div>
       <Footer />
 
-      {/* Modales */}
-      <CrearPlanModal
-        isOpen={showCrearModal}
-        onClose={() => setShowCrearModal(false)}
-        onPlanCreated={handleCreatePlan}
-        empresas={empresas}
-        promocionesDisponibles={promocionesDisponibles}
-      />
+      {/* Modales - Ahora son overlays dentro del mismo contenedor */}
+    <AnimatePresence>
+      {showCrearModal && (
+        <div className="fixed inset-0 z-50">
+          <div className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm"></div>
+          <CrearPlanModal
+            isOpen={showCrearModal}
+            onClose={() => setShowCrearModal(false)}
+            onPlanCreated={handleCreatePlan}
+            empresas={empresas}
+            promocionesDisponibles={promocionesDisponibles}
+          />
+        </div>
+      )}
+    </AnimatePresence>
 
-      <VerPlanModal
-        plan={planToView}
-        onClose={() => setPlanToView(null)}
-      />
+    <AnimatePresence>
+      {planToView && (
+        <div className="fixed inset-0 z-50">
+          <div className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm"></div>
+          <VerPlanModal
+            plan={planToView}
+            onClose={() => setPlanToView(null)}
+          />
+        </div>
+      )}
+    </AnimatePresence>
 
-      <EditarPlanModal
-        plan={planToEdit}
-        onClose={() => setPlanToEdit(null)}
-        onPlanUpdated={handleUpdatePlan}
-        empresas={empresas}
-        promocionesDisponibles={promocionesDisponibles}
-      />
+    <AnimatePresence>
+      {planToEdit && (
+        <div className="fixed inset-0 z-50">
+          <div className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm"></div>
+          <EditarPlanModal
+            plan={planToEdit}
+            onClose={() => setPlanToEdit(null)}
+            onPlanUpdated={handleUpdatePlan}
+            empresas={empresas}
+            promocionesDisponibles={promocionesDisponibles}
+          />
+        </div>
+      )}
+    </AnimatePresence>
     </>
   );
 };

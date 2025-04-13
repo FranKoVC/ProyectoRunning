@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { PlanFormData, Empresa, Promocion } from './planTypes';
+import { PlanFormData, Empresa, Promocion, Beneficio } from './planTypes';
+import { FaChevronDown, FaChevronUp, FaCheck } from 'react-icons/fa';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface PlanFormProps {
   empresas: Empresa[];
   promocionesDisponibles: Promocion[];
   onSubmit: (formData: PlanFormData) => void;
   initialData?: Partial<PlanFormData>;
+  isEditing?: boolean;
 }
 
 const PlanForm: React.FC<PlanFormProps> = ({ 
   empresas, 
   promocionesDisponibles, 
   onSubmit,
-  initialData 
+  initialData,
+  isEditing = false
 }) => {
   const [formData, setFormData] = useState<PlanFormData>({
     nombre: initialData?.nombre || '',
@@ -21,19 +25,19 @@ const PlanForm: React.FC<PlanFormProps> = ({
     tipo: initialData?.tipo || 'basico',
     color: initialData?.color || '#3b82f6',
     empresasSeleccionadas: initialData?.empresasSeleccionadas || [],
+    beneficiosSeleccionados: initialData?.beneficiosSeleccionados || [],
     promociones: initialData?.promociones || [],
     terminosCondiciones: initialData?.terminosCondiciones || ''
   });
 
-  const [empresasConBeneficios, setEmpresasConBeneficios] = useState<Empresa[]>([]);
+  const [showEmpresasDropdown, setShowEmpresasDropdown] = useState(false);
+  const [showPromocionesDropdown, setShowPromocionesDropdown] = useState(false);
+  const [selectedEmpresa, setSelectedEmpresa] = useState<string | null>(null);
 
-  useEffect(() => {
-    // Filtrar empresas seleccionadas con sus beneficios
-    const selected = empresas.filter(empresa => 
-      formData.empresasSeleccionadas.includes(empresa.id)
-    );
-    setEmpresasConBeneficios(selected);
-  }, [formData.empresasSeleccionadas, empresas]);
+  const colors = [
+    '#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6',
+    '#ec4899', '#14b8a6', '#f97316', '#6366f1', '#d946ef'
+  ];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -43,22 +47,67 @@ const PlanForm: React.FC<PlanFormProps> = ({
     }));
   };
 
-  const handleEmpresaToggle = (empresaId: string) => {
+  const handleColorChange = (color: string) => {
     setFormData(prev => ({
       ...prev,
-      empresasSeleccionadas: prev.empresasSeleccionadas.includes(empresaId)
-        ? prev.empresasSeleccionadas.filter(id => id !== empresaId)
-        : [...prev.empresasSeleccionadas, empresaId]
+      color
     }));
   };
 
-  const handlePromocionToggle = (promocion: Promocion) => {
-    setFormData(prev => ({
-      ...prev,
-      promociones: prev.promociones.some(p => p.id === promocion.id)
-        ? prev.promociones.filter(p => p.id !== promocion.id)
-        : [...prev.promociones, promocion]
-    }));
+  const toggleEmpresaSelection = (empresaId: string) => {
+    const isSelected = formData.empresasSeleccionadas.includes(empresaId);
+    if (isSelected) {
+      setFormData(prev => ({
+        ...prev,
+        empresasSeleccionadas: prev.empresasSeleccionadas.filter(id => id !== empresaId),
+        beneficiosSeleccionados: prev.beneficiosSeleccionados.filter(b => 
+          !empresas.find(e => e.id === empresaId)?.beneficios.some(be => be.id === b)
+        )
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        empresasSeleccionadas: [...prev.empresasSeleccionadas, empresaId]
+      }));
+    }
+  };
+
+  const toggleBeneficioSelection = (beneficioId: string) => {
+    const isSelected = formData.beneficiosSeleccionados.includes(beneficioId);
+    if (isSelected) {
+      setFormData(prev => ({
+        ...prev,
+        beneficiosSeleccionados: prev.beneficiosSeleccionados.filter(id => id !== beneficioId)
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        beneficiosSeleccionados: [...prev.beneficiosSeleccionados, beneficioId]
+      }));
+    }
+  };
+
+  const togglePromocionSelection = (promocionId: string) => {
+    const isSelected = formData.promociones.some(p => p.id === promocionId);
+    if (isSelected) {
+      setFormData(prev => ({
+        ...prev,
+        promociones: prev.promociones.filter(p => p.id !== promocionId)
+      }));
+    } else {
+      const promocionToAdd = promocionesDisponibles.find(p => p.id === promocionId);
+      if (promocionToAdd) {
+        setFormData(prev => ({
+          ...prev,
+          promociones: [...prev.promociones, promocionToAdd]
+        }));
+      }
+    }
+  };
+
+  const getActiveBenefitsForEmpresa = (empresaId: string): Beneficio[] => {
+    const empresa = empresas.find(e => e.id === empresaId);
+    return empresa ? empresa.beneficios.filter(b => b.activo) : [];
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -69,21 +118,26 @@ const PlanForm: React.FC<PlanFormProps> = ({
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Nombre y Precio */}
+        {/* Nombre del Plan */}
         <div>
-          <label className="block text-sm font-medium text-gray-700">Nombre del Plan</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Nombre del Plan
+          </label>
           <input
             type="text"
             name="nombre"
             value={formData.nombre}
             onChange={handleInputChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           />
         </div>
-        
+
+        {/* Precio */}
         <div>
-          <label className="block text-sm font-medium text-gray-700">Precio (S/)</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Precio (S/)
+          </label>
           <input
             type="number"
             name="precio"
@@ -91,19 +145,21 @@ const PlanForm: React.FC<PlanFormProps> = ({
             onChange={handleInputChange}
             min="0"
             step="0.01"
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           />
         </div>
-        
-        {/* Duración y Tipo */}
+
+        {/* Duración */}
         <div>
-          <label className="block text-sm font-medium text-gray-700">Duración</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Duración
+          </label>
           <select
             name="duracion"
             value={formData.duracion}
             onChange={handleInputChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="1 mes">1 mes</option>
             <option value="2 meses">2 meses</option>
@@ -111,133 +167,187 @@ const PlanForm: React.FC<PlanFormProps> = ({
             <option value="anual">Anual</option>
           </select>
         </div>
-        
+
+        {/* Tipo de Plan */}
         <div>
-          <label className="block text-sm font-medium text-gray-700">Tipo</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Tipo de Plan
+          </label>
           <select
             name="tipo"
             value={formData.tipo}
             onChange={handleInputChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="basico">Básico</option>
             <option value="premium">Premium</option>
           </select>
         </div>
-        
-        {/* Color */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Color identificador</label>
-          <div className="flex items-center mt-1">
-            <input
-              type="color"
-              name="color"
-              value={formData.color}
-              onChange={handleInputChange}
-              className="h-10 w-10 rounded-md border border-gray-300 cursor-pointer"
-            />
-            <span className="ml-2 text-sm text-gray-500">{formData.color}</span>
-          </div>
-        </div>
-      </div>
-      
-      {/* Selección de Empresas */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">Empresas incluidas</label>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-          {empresas.map(empresa => (
-            <div key={empresa.id} className="flex items-start">
-              <div className="flex items-center h-5">
-                <input
-                  type="checkbox"
-                  id={`empresa-${empresa.id}`}
-                  checked={formData.empresasSeleccionadas.includes(empresa.id)}
-                  onChange={() => handleEmpresaToggle(empresa.id)}
-                  className="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded"
-                />
-              </div>
-              <div className="ml-3 text-sm">
-                <label htmlFor={`empresa-${empresa.id}`} className="font-medium text-gray-700">
-                  {empresa.nombre}
-                </label>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-      
-      {/* Beneficios de las empresas seleccionadas */}
-      {empresasConBeneficios.length > 0 && (
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Beneficios incluidos</label>
-          <div className="bg-gray-50 p-4 rounded-md">
-            {empresasConBeneficios.map(empresa => (
-              <div key={empresa.id} className="mb-4 last:mb-0">
-                <h4 className="font-medium text-gray-800">{empresa.nombre}</h4>
-                <ul className="mt-2 space-y-2">
-                  {empresa.beneficios.filter(b => b.activo).map(beneficio => (
-                    <li key={beneficio.id} className="flex items-start">
-                      <svg className="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                      <span className="text-sm text-gray-700">
-                        <strong>{beneficio.nombre}:</strong> {beneficio.descripcion}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+
+        {/* Color del Plan */}
+        <div className="md:col-span-2">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Color del Plan
+          </label>
+          <div className="flex flex-wrap gap-2">
+            {colors.map(color => (
+              <motion.div
+                key={color}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={() => handleColorChange(color)}
+                className={`w-8 h-8 rounded-full cursor-pointer flex items-center justify-center ${formData.color === color ? 'ring-2 ring-offset-2 ring-gray-400' : ''}`}
+                style={{ backgroundColor: color }}
+              >
+                {formData.color === color && <FaCheck className="text-white text-xs" />}
+              </motion.div>
             ))}
           </div>
         </div>
-      )}
-      
-      {/* Promociones adicionales */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">Promociones adicionales</label>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {promocionesDisponibles.map(promocion => (
-            <div key={promocion.id} className="flex items-start border rounded-md p-3">
-              <div className="flex items-center h-5">
-                <input
-                  type="checkbox"
-                  id={`promocion-${promocion.id}`}
-                  checked={formData.promociones.some(p => p.id === promocion.id)}
-                  onChange={() => handlePromocionToggle(promocion)}
-                  className="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded"
-                />
-              </div>
-              <div className="ml-3 text-sm">
-                <label htmlFor={`promocion-${promocion.id}`} className="font-medium text-gray-700 block">
-                  {promocion.titulo}
-                </label>
-                <p className="text-gray-500">{promocion.descripcion}</p>
-              </div>
-            </div>
-          ))}
+      </div>
+
+      {/* Empresas y Beneficios */}
+      <div className="border-t border-gray-200 pt-4">
+        <h3 className="text-lg font-medium text-gray-800 mb-3">Empresas y Beneficios</h3>
+        
+        <div className="mb-4">
+          <button
+            type="button"
+            onClick={() => setShowEmpresasDropdown(!showEmpresasDropdown)}
+            className="flex justify-between items-center w-full px-4 py-2 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
+          >
+            <span>Seleccionar Empresas ({formData.empresasSeleccionadas.length} seleccionadas)</span>
+            {showEmpresasDropdown ? <FaChevronUp /> : <FaChevronDown />}
+          </button>
+          
+          <AnimatePresence>
+            {showEmpresasDropdown && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                className="mt-2 space-y-2 overflow-hidden"
+              >
+                {empresas.map(empresa => (
+                  <div key={empresa.id} className="border rounded-md p-3">
+                    <div className="flex items-center">
+                      <input
+                        type="checkbox"
+                        id={`empresa-${empresa.id}`}
+                        checked={formData.empresasSeleccionadas.includes(empresa.id)}
+                        onChange={() => toggleEmpresaSelection(empresa.id)}
+                        className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                      />
+                      <label htmlFor={`empresa-${empresa.id}`} className="ml-2 block text-sm font-medium text-gray-700">
+                        {empresa.nombre}
+                      </label>
+                    </div>
+
+                    {formData.empresasSeleccionadas.includes(empresa.id) && (
+                      <div className="mt-2 ml-6 space-y-2">
+                        <h4 className="text-sm font-medium text-gray-600">Beneficios Activos:</h4>
+                        {getActiveBenefitsForEmpresa(empresa.id).length > 0 ? (
+                          getActiveBenefitsForEmpresa(empresa.id).map(beneficio => (
+                            <div key={beneficio.id} className="flex items-center">
+                              <input
+                                type="checkbox"
+                                id={`beneficio-${beneficio.id}`}
+                                checked={formData.beneficiosSeleccionados.includes(beneficio.id)}
+                                onChange={() => toggleBeneficioSelection(beneficio.id)}
+                                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                              />
+                              <label htmlFor={`beneficio-${beneficio.id}`} className="ml-2 block text-sm text-gray-700">
+                                {beneficio.nombre} - {beneficio.descripcion}
+                              </label>
+                            </div>
+                          ))
+                        ) : (
+                          <p className="text-sm text-gray-500">Esta empresa no tiene beneficios activos</p>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
-      
-      {/* Términos y condiciones */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700">Términos y condiciones</label>
+
+      {/* Promociones Extras */}
+      <div className="border-t border-gray-200 pt-4">
+        <h3 className="text-lg font-medium text-gray-800 mb-3">Promociones Extras</h3>
+        
+        <button
+          type="button"
+          onClick={() => setShowPromocionesDropdown(!showPromocionesDropdown)}
+          className="flex justify-between items-center w-full px-4 py-2 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors mb-3"
+        >
+          <span>Seleccionar Promociones ({formData.promociones.length} seleccionadas)</span>
+          {showPromocionesDropdown ? <FaChevronUp /> : <FaChevronDown />}
+        </button>
+        
+        <AnimatePresence>
+          {showPromocionesDropdown && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="space-y-2 overflow-hidden"
+            >
+              {promocionesDisponibles.map(promocion => (
+                <div key={promocion.id} className="border rounded-md p-3">
+                  <div className="flex items-center">
+                    <input
+                      type="checkbox"
+                      id={`promocion-${promocion.id}`}
+                      checked={formData.promociones.some(p => p.id === promocion.id)}
+                      onChange={() => togglePromocionSelection(promocion.id)}
+                      className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                    />
+                    <label htmlFor={`promocion-${promocion.id}`} className="ml-2 block text-sm font-medium text-gray-700">
+                      {promocion.titulo}
+                    </label>
+                  </div>
+                  <p className="ml-6 text-sm text-gray-600">{promocion.descripcion}</p>
+                </div>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* Términos y Condiciones */}
+      <div className="border-t border-gray-200 pt-4">
+        <h3 className="text-lg font-medium text-gray-800 mb-3">Términos y Condiciones</h3>
         <textarea
           name="terminosCondiciones"
           value={formData.terminosCondiciones}
           onChange={handleInputChange}
           rows={4}
-          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-          placeholder="Describe los términos y condiciones específicos para este plan..."
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Ingrese los términos y condiciones del plan..."
         />
       </div>
-      
-      <div className="flex justify-end">
-        <button
-          type="submit"
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+
+      <div className="flex justify-end space-x-3 pt-4">
+        <motion.button
+          type="button"
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          onClick={() => window.history.back()}
+          className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         >
-          Guardar Plan
-        </button>
+          Cancelar
+        </motion.button>
+        <motion.button
+          type="submit"
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        >
+          {isEditing ? 'Guardar Cambios' : 'Crear Plan'}
+        </motion.button>
       </div>
     </form>
   );

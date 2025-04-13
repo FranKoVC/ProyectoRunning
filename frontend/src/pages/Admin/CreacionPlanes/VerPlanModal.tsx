@@ -1,6 +1,7 @@
-import React from 'react';
-import { Dialog } from '@headlessui/react';
-import { Plan } from './planTypes';
+import React from "react";
+import { Plan } from "./planTypes"; // Adjust the import path as necessary
+import { FaTimes } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 interface VerPlanModalProps {
   plan: Plan | null;
@@ -11,88 +12,108 @@ const VerPlanModal: React.FC<VerPlanModalProps> = ({ plan, onClose }) => {
   if (!plan) return null;
 
   return (
-    <Dialog open={!!plan} onClose={onClose} className="fixed z-10 inset-0 overflow-y-auto">
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="fixed inset-0 bg-black opacity-30" />
-        
-        <div className="relative bg-white rounded-lg max-w-2xl w-full mx-auto p-6 shadow-xl">
-          <Dialog.Title className="text-2xl font-bold text-gray-800 mb-4">
-            Detalles del Plan: {plan.nombre}
-          </Dialog.Title>
-          
-          <div className="space-y-4">
-            <div className="flex justify-between">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <motion.div 
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 20 }}
+        className="bg-white rounded-lg shadow-xl w-full max-w-3xl max-h-[90vh] overflow-y-auto"
+      >
+        <div className="p-6">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-2xl font-bold text-gray-800">Detalles del Plan</h2>
+            <button 
+              onClick={onClose}
+              className="text-gray-500 hover:text-gray-700"
+            >
+              <FaTimes size={20} />
+            </button>
+          </div>
+
+          <div className="space-y-6">
+            <div className="flex items-start">
+              <div 
+                className="w-16 h-16 rounded-full mr-4 flex-shrink-0"
+                style={{ backgroundColor: plan.color }}
+              />
               <div>
-                <h3 className="font-medium text-gray-700">Precio:</h3>
-                <p>S/ {plan.precio}</p>
-              </div>
-              <div>
-                <h3 className="font-medium text-gray-700">Duración:</h3>
-                <p>{plan.duracion}</p>
-              </div>
-              <div>
-                <h3 className="font-medium text-gray-700">Tipo:</h3>
-                <p className="capitalize">{plan.tipo}</p>
+                <h3 className="text-xl font-bold text-gray-800">{plan.nombre}</h3>
+                <div className="flex flex-wrap gap-2 mt-1">
+                  <span className={`px-2 py-1 text-xs rounded-full ${
+                    plan.tipo === "premium" 
+                      ? "bg-indigo-100 text-indigo-800" 
+                      : "bg-gray-100 text-gray-800"
+                  }`}>
+                    {plan.tipo === "premium" ? "Premium" : "Básico"}
+                  </span>
+                  <span className="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800">
+                    {plan.duracion}
+                  </span>
+                  <span className={`px-2 py-1 text-xs rounded-full ${
+                    plan.activo 
+                      ? "bg-green-100 text-green-800" 
+                      : "bg-gray-100 text-gray-800"
+                  }`}>
+                    {plan.activo ? "Activo" : "Inactivo"}
+                  </span>
+                </div>
+                <p className="text-xl font-bold text-gray-900 mt-2">S/ {plan.precio}</p>
               </div>
             </div>
-            
-            <div>
-              <h3 className="font-medium text-gray-700">Empresas incluidas:</h3>
-              <ul className="list-disc list-inside mt-1">
+
+            <div className="border-t border-gray-200 pt-4">
+              <h4 className="text-lg font-medium text-gray-800 mb-3">Empresas incluidas</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {plan.empresas.map(empresa => (
-                  <li key={empresa.id}>{empresa.nombre}</li>
-                ))}
-              </ul>
-            </div>
-            
-            <div>
-              <h3 className="font-medium text-gray-700">Beneficios:</h3>
-              <div className="mt-2 space-y-3">
-                {plan.empresas.map(empresa => (
-                  <div key={empresa.id}>
-                    <h4 className="font-medium">{empresa.nombre}</h4>
-                    <ul className="ml-4 list-disc">
-                      {empresa.beneficios.filter(b => b.activo).map(beneficio => (
-                        <li key={beneficio.id}>
-                          <strong>{beneficio.nombre}:</strong> {beneficio.descripcion}
-                        </li>
-                      ))}
-                    </ul>
+                  <div key={empresa.id} className="border rounded-lg p-3">
+                    <h5 className="font-medium text-gray-800">{empresa.nombre}</h5>
+                    {empresa.beneficios.length > 0 ? (
+                      <ul className="mt-2 space-y-1">
+                        {empresa.beneficios.map(beneficio => (
+                          <li key={beneficio.id} className="text-sm text-gray-600">
+                            • {beneficio.nombre}: {beneficio.descripcion}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="text-sm text-gray-500 mt-1">No hay beneficios seleccionados</p>
+                    )}
                   </div>
                 ))}
               </div>
             </div>
-            
+
             {plan.promociones.length > 0 && (
-              <div>
-                <h3 className="font-medium text-gray-700">Promociones:</h3>
-                <ul className="mt-2 space-y-2">
-                  {plan.promociones.map(promo => (
-                    <li key={promo.id}>
-                      <strong>{promo.titulo}:</strong> {promo.descripcion}
-                    </li>
+              <div className="border-t border-gray-200 pt-4">
+                <h4 className="text-lg font-medium text-gray-800 mb-3">Promociones especiales</h4>
+                <div className="space-y-2">
+                  {plan.promociones.map(promocion => (
+                    <div key={promocion.id} className="border-l-4 border-blue-500 pl-3 py-1">
+                      <h5 className="font-medium text-gray-800">{promocion.titulo}</h5>
+                      <p className="text-sm text-gray-600">{promocion.descripcion}</p>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </div>
             )}
-            
-            <div>
-              <h3 className="font-medium text-gray-700">Términos y condiciones:</h3>
-              <p className="mt-1 whitespace-pre-line">{plan.terminosCondiciones}</p>
+
+            <div className="border-t border-gray-200 pt-4">
+              <h4 className="text-lg font-medium text-gray-800 mb-3">Términos y condiciones</h4>
+              <p className="text-sm text-gray-600 whitespace-pre-line">{plan.terminosCondiciones}</p>
+            </div>
+
+            <div className="flex justify-end pt-4">
+              <button
+                onClick={onClose}
+                className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              >
+                Cerrar
+              </button>
             </div>
           </div>
-          
-          <div className="mt-6 flex justify-end">
-            <button
-              onClick={onClose}
-              className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300"
-            >
-              Cerrar
-            </button>
-          </div>
         </div>
-      </div>
-    </Dialog>
+      </motion.div>
+    </div>
   );
 };
 
