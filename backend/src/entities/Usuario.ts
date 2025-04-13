@@ -35,7 +35,7 @@ export class Usuario {
   @Column("character varying", { name: "foto", nullable: true, length: 255 })
   foto: string | null;
 
-  @Column("character varying", { name: "estado", length: 15, default: "'activo'" })
+  @Column("character varying", { name: "estado", length: 15, default: 'activo' })
   estado: string;
 
   @OneToMany(() => Administrador, (administrador) => administrador.idUsuario)
