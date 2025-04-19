@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState} from 'react';
 import { PlanFormData, Empresa, Promocion, Beneficio } from './planTypes';
 import { FaChevronDown, FaChevronUp, FaCheck } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -32,7 +32,6 @@ const PlanForm: React.FC<PlanFormProps> = ({
 
   const [showEmpresasDropdown, setShowEmpresasDropdown] = useState(false);
   const [showPromocionesDropdown, setShowPromocionesDropdown] = useState(false);
-  const [selectedEmpresa, setSelectedEmpresa] = useState<string | null>(null);
 
   const colors = [
     '#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6',

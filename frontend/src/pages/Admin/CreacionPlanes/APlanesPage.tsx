@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import Navbar from "../../../components/Navbar";
 import Footer from "../../../components/Footer";
 import { FaPlus, FaEdit, FaTrash, FaEye } from "react-icons/fa";
@@ -60,7 +59,7 @@ const APlanesPage: React.FC = () => {
   const [planToEdit, setPlanToEdit] = useState<Plan | null>(null);
   
   // Datos de ejemplo para empresas
-  const [empresas, setEmpresas] = useState<Empresa[]>([
+  const [empresas] = useState<Empresa[]>([
     {
       id: "1",
       nombre: "Club TTT",
@@ -87,7 +86,7 @@ const APlanesPage: React.FC = () => {
     },
   ]);
 
-  const [promocionesDisponibles, setPromocionesDisponibles] = useState<Promocion[]>([
+  const [promocionesDisponibles] = useState<Promocion[]>([
     { id: "1", titulo: "Sorteo mensual", descripcion: "Participa en un sorteo mensual por tu suscripción" },
     { id: "2", titulo: "Beneficio extra", descripcion: "Obtén un beneficio exclusivo cada 3 meses" },
     { id: "3", titulo: "Descuento anual", descripcion: "10% de descuento al renovar tu plan anual" },

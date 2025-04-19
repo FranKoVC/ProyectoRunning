@@ -30,7 +30,7 @@ const CrearPlanModal: React.FC<CrearPlanModalProps> = ({
     terminosCondiciones: "",
   });
 
-  const [selectedEmpresa, setSelectedEmpresa] = useState<string | null>(null);
+
   const [showEmpresasDropdown, setShowEmpresasDropdown] = useState(false);
   const [showPromocionesDropdown, setShowPromocionesDropdown] = useState(false);
 
