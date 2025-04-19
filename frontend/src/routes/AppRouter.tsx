@@ -4,9 +4,8 @@ import Home from "../components/Home";
 
 import AReportes from "../pages/Admin/Reportes";
 import APlanesPage from "../pages/Admin/CreacionPlanes/APlanesPage";
-
 import ARegistroEmpresa from "../pages/Admin/RegistroEmpresa";
-import AAdminBeneficio from "../pages/Admin/AdminBeneficios";
+
 
 import Contacto from "../pages/Todos/Contacto";
 import Beneficios from "../pages/Todos/Beneficios";
@@ -19,12 +18,25 @@ import ClienteRegistro from "../pages/Cliente/Registro";
 import ClientePago from "../pages/Cliente/PagoVoucher";
 import ClienteInfo from "../pages/Cliente/InfoCliente";
 
+
 import ERegistroVisita from "../pages/Empresa/RegistroVisitas";
+
 
 
 import Login from "../pages/Auth/Login";
 
-
+/**
+ * AppRouter - Enrutador principal de la aplicación.
+ *
+ * Define las rutas de navegación para cada tipo de usuario:
+ * - Público general
+ * - Administrador
+ * - Cliente
+ * - Empresa
+ * - Autenticación
+ *
+ * Usa HashRouter para compatibilidad con servidores sin configuración especial.
+ */
 
 const AppRouter = () => {
   return (
