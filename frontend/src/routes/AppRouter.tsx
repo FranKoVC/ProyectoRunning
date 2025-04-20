@@ -5,6 +5,7 @@ import Home from "../components/Home";
 import AReportes from "../pages/Admin/Reportes";
 import APlanesPage from "../pages/Admin/CreacionPlanes/APlanesPage";
 import ARegistroEmpresa from "../pages/Admin/RegistroEmpresa";
+import AAdminBeneficio from "../pages/Admin/AdminBeneficios";
 
 
 import Contacto from "../pages/Todos/Contacto";
