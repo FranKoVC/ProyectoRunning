@@ -11,7 +11,7 @@ import Modal from "react-modal";
 // Configurar Modal para accesibilidad
 Modal.setAppElement('#root');
 
-// Tipos para los datos
+// 1. Definición de interfaces para tipado fuerte
 interface Pago {
   id: string;
   membresia: string;
@@ -30,51 +30,38 @@ interface Visita {
   monto: number;
 }
 
-// Tipo para las opciones de react-select
 interface Option {
   value: string;
   label: string;
 }
 
-// Interfaz para el rango de fechas
 interface RangoFechas {
   fechaInicio: string;
   fechaFin: string;
 }
 
 const InfoCliente = () => {
+  // 2. Gestión de estado principal
   const [vistaSeleccionada, setVistaSeleccionada] = useState<"pagos" | "visitas" | "editarPerfil" | "administrarMembresia">("pagos");
   const [pagos, setPagos] = useState<Pago[]>([]);
   const [visitas, setVisitas] = useState<Visita[]>([]);
-
-  // Estados para los resultados de búsqueda
   const [pagosFiltrados, setPagosFiltrados] = useState<Pago[]>([]);
   const [visitasFiltradas, setVisitasFiltradas] = useState<Visita[]>([]);
-  
-  // Estados para los filtros
   const [filtroMembresia, setFiltroMembresia] = useState<Option | null>(null);
   const [filtroEstadoPago, setFiltroEstadoPago] = useState<Option | null>(null);
-  
-  // Nuevo estado para rango de fechas de pago
   const [filtroRangoFechaPago, setFiltroRangoFechaPago] = useState<RangoFechas>({
     fechaInicio: "",
     fechaFin: ""
   });
-  
   const [filtroEmpresa, setFiltroEmpresa] = useState<Option | null>(null);
-  
-  // Nuevo estado para rango de fechas de visita
   const [filtroRangoFechaVisita, setFiltroRangoFechaVisita] = useState<RangoFechas>({
     fechaInicio: "",
     fechaFin: ""
   });
-  
-  // Estado para modal
   const [, setModalIsOpen] = useState(false);
   const [, setComprobanteSeleccionado] = useState<string | null>(null);
   const [, setDetalleSeleccionado] = useState<Pago | null>(null);
 
-  // Opciones para los selects
   const opcionesMembresías: Option[] = [
     { value: "Básico", label: "Básico" },
     { value: "Premium", label: "Premium" },
@@ -88,11 +75,10 @@ const InfoCliente = () => {
     { value: "rechazado", label: "Rechazado" }
   ];
 
-  // Opciones de empresas
   const [opcionesEmpresas, setOpcionesEmpresas] = useState<Option[]>([]);
 
+  // 3. Efecto para cargar datos iniciales
   useEffect(() => {
-    // Datos simulados - Pagos
     const datosPagos = [
       { 
         id: "PAG001", 
@@ -123,7 +109,6 @@ const InfoCliente = () => {
       }
     ] as Pago[];
 
-    // Datos simulados - Visitas
     const datosVisitas = [
       { 
         id: "VIS001", 
@@ -164,11 +149,9 @@ const InfoCliente = () => {
 
     setPagos(datosPagos);
     setPagosFiltrados(datosPagos);
-    
     setVisitas(datosVisitas);
     setVisitasFiltradas(datosVisitas);
 
-    // Obtener lista única de empresas
     const empresasUnicas = Array.from(new Set(datosVisitas.map(visita => visita.empresa)));
     setOpcionesEmpresas(empresasUnicas.map(empresa => ({
       value: empresa,
@@ -176,7 +159,7 @@ const InfoCliente = () => {
     })));
   }, []);
 
-  // Función para manejar cambios en el rango de fechas de pago
+  // 8. Manejo de fechas
   const handleRangoFechaPagoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFiltroRangoFechaPago(prev => ({
@@ -185,7 +168,6 @@ const InfoCliente = () => {
     }));
   };
 
-  // Función para manejar cambios en el rango de fechas de visita
   const handleRangoFechaVisitaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFiltroRangoFechaVisita(prev => ({
@@ -194,34 +176,28 @@ const InfoCliente = () => {
     }));
   };
 
-  // Función para filtrar pagos
+  // 4. Lógica de filtrado
   useEffect(() => {
     let filtrados = [...pagos];
     
-    // Filtrar por membresía
     if (filtroMembresia) {
       filtrados = filtrados.filter(pago => 
         pago.membresia === filtroMembresia.value
       );
     }
     
-    // Filtrar por estado
     if (filtroEstadoPago) {
       filtrados = filtrados.filter(pago => 
         pago.estado === filtroEstadoPago.value
       );
     }
     
-    // Filtrar por rango de fechas de pago
     if (filtroRangoFechaPago.fechaInicio && filtroRangoFechaPago.fechaFin) {
       filtrados = filtrados.filter(pago => {
         const fechaPago = new Date(pago.fechaPago);
         const fechaInicio = new Date(filtroRangoFechaPago.fechaInicio);
         const fechaFin = new Date(filtroRangoFechaPago.fechaFin);
-        
-        // Ajustar fechaFin para incluir todo el día
         fechaFin.setHours(23, 59, 59, 999);
-        
         return fechaPago >= fechaInicio && fechaPago <= fechaFin;
       });
     }
@@ -229,27 +205,21 @@ const InfoCliente = () => {
     setPagosFiltrados(filtrados);
   }, [filtroMembresia, filtroEstadoPago, filtroRangoFechaPago, pagos]);
 
-  // Función para filtrar visitas
   useEffect(() => {
     let filtradas = [...visitas];
     
-    // Filtrar por empresa
     if (filtroEmpresa) {
       filtradas = filtradas.filter(visita => 
         visita.empresa === filtroEmpresa.value
       );
     }
     
-    // Filtrar por rango de fechas de visita
     if (filtroRangoFechaVisita.fechaInicio && filtroRangoFechaVisita.fechaFin) {
       filtradas = filtradas.filter(visita => {
         const fechaVisita = new Date(visita.fecha);
         const fechaInicio = new Date(filtroRangoFechaVisita.fechaInicio);
         const fechaFin = new Date(filtroRangoFechaVisita.fechaFin);
-        
-        // Ajustar fechaFin para incluir todo el día
         fechaFin.setHours(23, 59, 59, 999);
-        
         return fechaVisita >= fechaInicio && fechaVisita <= fechaFin;
       });
     }
@@ -257,7 +227,6 @@ const InfoCliente = () => {
     setVisitasFiltradas(filtradas);
   }, [filtroEmpresa, filtroRangoFechaVisita, visitas]);
 
-  // Función para limpiar los filtros
   const limpiarFiltros = () => {
     if (vistaSeleccionada === "pagos") {
       setFiltroMembresia(null);
@@ -277,14 +246,13 @@ const InfoCliente = () => {
     }
   };
 
-  // Función para ver comprobante
   const verComprobante = (pago: Pago) => {
     setComprobanteSeleccionado(pago.comprobante);
     setDetalleSeleccionado(pago);
     setModalIsOpen(true);
   };
 
-  // Renderizar estado de pago con color
+  // 10. Renderizado condicional de estados
   const renderEstadoPago = (estado: string) => {
     let color = "";
     let text = "";
@@ -306,7 +274,7 @@ const InfoCliente = () => {
     return <span className={color}>{text}</span>;
   };
 
-  // Preparar datos para el gráfico de visitas por empresa
+  // 6. Configuración de gráficos
   const visitasPorEmpresa = {
     labels: opcionesEmpresas.map(opt => opt.label),
     datasets: [
@@ -320,7 +288,6 @@ const InfoCliente = () => {
     ],
   };
 
-  // Preparar datos para el gráfico de gastos por empresa
   const gastosPorEmpresa = {
     labels: opcionesEmpresas.map(opt => opt.label),
     datasets: [
@@ -336,7 +303,7 @@ const InfoCliente = () => {
     ],
   };
 
-  // Estilos para react-select
+  // 7. Estilos personalizados para react-select
   const customStyles = {
     control: (provided: any) => ({
       ...provided,
@@ -356,16 +323,14 @@ const InfoCliente = () => {
     }),
   };
 
-  // Estilos para el modal
-
   return (
+    // 9. Componentes reutilizables
     <>
       <Navbar />
       <div className="p-6 bg-gray-50 min-h-screen">
         <div className="max-w-6xl mx-auto">
           <h1 className="text-3xl font-bold mb-6 text-gray-800">Mi Cuenta</h1>
           
-          {/* Menú de selección de vista */}
           <div className="flex space-x-4 mb-8">
             <button 
               onClick={() => setVistaSeleccionada("pagos")} 
@@ -393,13 +358,12 @@ const InfoCliente = () => {
             </button>
           </div>
 
-          {/* Contenido de la vista seleccionada */}
+          {/* 5. Componentes de visualización condicional */}
           <div className="bg-white rounded-lg shadow-md p-6">
             {vistaSeleccionada === "pagos" ? (
               <>
                 <h2 className="text-2xl font-bold mb-6 text-gray-800">Historial de Pagos</h2>
                 
-                {/* Filtros para historial de pagos */}
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Membresía</label>
@@ -455,7 +419,6 @@ const InfoCliente = () => {
                   Limpiar filtros
                 </button>
                 
-                {/* Tabla de pagos */}
                 <div className="overflow-x-auto rounded-lg border border-gray-200">
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
@@ -504,7 +467,6 @@ const InfoCliente = () => {
               <>
                 <h2 className="text-2xl font-bold mb-6 text-gray-800">Historial de Visitas</h2>
                 
-                {/* Filtros para historial de visitas */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Empresa</label>
@@ -550,7 +512,6 @@ const InfoCliente = () => {
                   Limpiar filtros
                 </button>
                 
-                {/* Tabla de visitas */}
                 <div className="overflow-x-auto rounded-lg border border-gray-200">
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
@@ -584,7 +545,6 @@ const InfoCliente = () => {
                   </table>
                 </div>
                 
-                {/* Gráficos de análisis de visitas */}
                 {visitasFiltradas.length > 0 && (
                   <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="bg-white p-4 rounded-lg shadow border border-gray-200">

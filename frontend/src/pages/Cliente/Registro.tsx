@@ -5,16 +5,19 @@ import registroImg from "../../images/1sn.jpeg";
 import { Link } from "react-router-dom";
 
 const Registro = () => {
+  // 1. Estados para manejar los datos del formulario
   const [tipoDocumento, setTipoDocumento] = useState("");
   const [documento, setDocumento] = useState("");
   const [, setFotoPerfil] = useState<File | null>(null);
   const [previewFoto, setPreviewFoto] = useState<string | null>(null);
 
+  // 2. Función para manejar la subida de la foto de perfil
   const handleFotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files[0]) {
       const file = files[0];
       setFotoPerfil(file);
+      // Crear vista previa de la imagen
       const reader = new FileReader();
       reader.onloadend = () => {
         if (typeof reader.result === "string") {
@@ -27,17 +30,19 @@ const Registro = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
+      {/* 3. Componentes reutilizables de la estructura de la página */}
       <Navbar />
 
+      {/* 4. Contenido principal del formulario */}
       <main className="flex-grow flex items-center justify-center bg-gray-100 p-4">
         <div className="w-full max-w-6xl bg-white rounded-2xl overflow-hidden shadow-lg flex">
-          {/* Lado Izquierdo - Formulario */}
+          {/* 5. Panel izquierdo - Formulario de registro */}
           <div className="w-1/2 bg-[#FDF6E6] flex flex-col items-center justify-center p-10">
             <h1 className="text-4xl font-bold text-[#922D26]">Registra tus datos</h1>
 
             <div className="mt-6 w-full max-w-md">
               <form className="mt-4 space-y-4">
-                {/* Campo para foto de perfil */}
+                {/* 6. Campo para foto de perfil con vista previa */}
                 <div className="flex flex-col items-center mb-4">
                   <label className="text-[#922D26] font-medium mb-2">Foto de Perfil</label>
                   <div className="w-32 h-32 rounded-full bg-white flex items-center justify-center overflow-hidden mb-2 border-2 border-[#922D26]">
@@ -61,6 +66,7 @@ const Registro = () => {
                   />
                 </div>
 
+                {/* 7. Campos del formulario con validación condicional */}
                 <label className="text-[#922D26] font-medium">Tipo de Documento</label>
                 <select
                   className="w-full p-3 border border-white rounded-md bg-white text-gray-700 font-semibold"
@@ -81,6 +87,8 @@ const Registro = () => {
                     onChange={(e) => setDocumento(e.target.value)}
                   />
                 )}
+                
+                {/* 8. Resto de campos del formulario */}
                 <input
                   type="text"
                   placeholder="Nombres"
@@ -112,6 +120,8 @@ const Registro = () => {
                   placeholder="Fecha de Nacimiento"
                   className="w-full p-3 bg-white border border-white rounded-md"
                 />
+                
+                {/* 9. Botón para continuar al siguiente paso */}
                 <Link to="/cliente/pago">
                   <button
                     type="submit"
@@ -124,6 +134,7 @@ const Registro = () => {
             </div>
           </div>
 
+          {/* 10. Panel derecho - Imagen decorativa */}
           <div className="w-1/2 flex items-center justify-center bg-gray-200">
             <img
               src={registroImg}
