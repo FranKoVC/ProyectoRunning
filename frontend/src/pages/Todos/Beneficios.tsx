@@ -29,7 +29,6 @@ const categorias = ["Todos", ...new Set(beneficios.map((b) => b.categoria))];
 const Beneficio = () => {
   const navigate = useNavigate();
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("Todos");
-  const token = localStorage.getItem("access_token");
 
   const beneficiosFiltrados = categoriaSeleccionada === "Todos"
     ? beneficios
@@ -66,14 +65,12 @@ const Beneficio = () => {
                 <h2 className="text-xl font-bold">{beneficio.descuento}</h2>
                 <h3 className="text-lg font-bold">{beneficio.nombre}</h3>
                 <h4 className="text-md font-bold">{beneficio.categoria}</h4>
-                {token && (
-                  <button
-                    className="mt-3 bg-red-700 text-white px-3 py-2 rounded transition-all duration-300 hover:bg-red-600 active:scale-95"
-                    onClick={() => handleVerBeneficio(beneficio.ruta)}
-                  >
-                    Ver beneficios →
-                  </button>
-                )}
+                <button
+                  className="mt-3 bg-red-700 text-white px-3 py-2 rounded transition-all duration-300 hover:bg-red-600 active:scale-95"
+                  onClick={() => handleVerBeneficio(beneficio.ruta)}
+                >
+                  Ver beneficios →
+                </button>
               </div>
             </div>
           ))}
