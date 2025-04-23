@@ -38,13 +38,15 @@ import { AuthModule } from './auth/auth.module';
       imports: [ConfigModule],
       useFactory: (config: ConfigService) => ({
         type: 'postgres',
-        url: config.get('DATABASE_URL'),
-        ssl: config.get('NODE_ENV') === 'production' ? { 
-          rejectUnauthorized: false 
-        } : false,
+        host: config.get('DB_HOST') || 'localhost', // Usa variables de entorno o valores por defecto
+        port: config.get<number>('DB_PORT') || 5432,
+        username: config.get('DB_USERNAME') || 'postgres',
+        password: config.get('DB_PASSWORD') || 'password', // Asegúrate de que sea string
+        database: config.get('DB_DATABASE') || 'ClubCoffee',
         entities: [
           Administrador,
           Cliente,
+          
           Empresa,
           EmpresaBeneficio,
           PlanBeneficio,
@@ -59,6 +61,9 @@ import { AuthModule } from './auth/auth.module';
         ],
         synchronize: false,
         logging: false,
+        ssl: config.get('NODE_ENV') === 'production' ? { 
+          rejectUnauthorized: false 
+        } : false,
       }),
       inject: [ConfigService],
     }),
