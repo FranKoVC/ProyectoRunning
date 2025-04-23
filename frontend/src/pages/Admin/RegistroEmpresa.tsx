@@ -2,7 +2,6 @@ import { useState } from "react";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import acuerdoImg from "../../images/acuerdo.jpeg";
-import { Link } from "react-router-dom";
 
 const RegistroEmpresa = () => {
   const [ruc, setRuc] = useState("");
@@ -11,7 +10,6 @@ const RegistroEmpresa = () => {
   const [celular, setCelular] = useState("");
   const [vigenciaInicio, setVigenciaInicio] = useState("");
   const [vigenciaFin, setVigenciaFin] = useState("");
-  const [descuento, setDescuento] = useState("");
   const [ciudad, setCiudad] = useState("");
   const [, setLogoEmpresa] = useState<File | null>(null);
   const [previewLogo, setPreviewLogo] = useState<string | null>(null);
@@ -113,28 +111,18 @@ const RegistroEmpresa = () => {
                   />
                 </div>
                 <input
-                  type="number"
-                  placeholder="Porcentaje de Descuento (%)"
-                  className="w-full p-3 bg-white border border-white rounded-md"
-                  value={descuento}
-                  onChange={(e) => setDescuento(e.target.value)}
-                />
-                <input
                   type="text"
                   placeholder="Ciudad"
                   className="w-full p-3 bg-white border border-white rounded-md"
                   value={ciudad}
                   onChange={(e) => setCiudad(e.target.value)}
                 />
-
-                <Link to="/empresa/home/pago">
                   <button
                     type="submit"
                     className="w-full bg-[#922D26] text-white py-3 rounded-md font-bold mt-4 hover:bg-[#7a2520]"
                   >
                     Registrar
                   </button>
-                </Link>
               </form>
             </div>
           </div>
