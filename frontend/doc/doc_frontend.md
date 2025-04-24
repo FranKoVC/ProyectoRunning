@@ -52,7 +52,7 @@
     ROL: EMPRESA
 
     - ARCHIVOS:
-        1. DFSSA
+        1. Registro
             - Funciones:
                 handleUpload(): Sube imagen.
                 handleSubmit(): Valida y envía al backend (por conectar).
@@ -65,7 +65,7 @@
     ROL: TODOS
 
     - ARCHIVOS:
-        1. DFSSA
+        1. Generales
             - Funciones:
                 handleUpload(): Sube imagen.
                 handleSubmit(): Valida y envía al backend (por conectar).

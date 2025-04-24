@@ -207,7 +207,7 @@ const RegistroEmpresa = () => {
                                 <input
                                     type="tel"
                                     name="celular"
-                                    placeholder="Celular (Ej: +51 987654321)"
+                                    placeholder="Celular"
                                     className="w-full p-3 bg-white border border-white rounded-md"
                                     value={formData.celular}
                                     onChange={handleChange}
