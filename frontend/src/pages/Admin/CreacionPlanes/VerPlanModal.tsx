@@ -11,6 +11,13 @@ interface VerPlanModalProps {
 const VerPlanModal: React.FC<VerPlanModalProps> = ({ plan, onClose }) => {
   if (!plan) return null;
 
+  // Función para ordenar arrays alfabéticamente
+  const sortByNombre = (a: { nombre: string }, b: { nombre: string }) => 
+    a.nombre.localeCompare(b.nombre);
+
+  const sortByTitulo = (a: { titulo: string }, b: { titulo: string }) => 
+    a.titulo.localeCompare(b.titulo);
+
   return (
     
       <motion.div 
@@ -64,12 +71,18 @@ const VerPlanModal: React.FC<VerPlanModalProps> = ({ plan, onClose }) => {
             <div className="border-t border-gray-200 pt-4">
               <h4 className="text-lg font-medium text-gray-800 mb-3">Empresas incluidas</h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {plan.empresas.map(empresa => (
+              {plan.empresas
+                .slice()
+                .sort(sortByNombre)
+                .map(empresa => (
                   <div key={empresa.id} className="border rounded-lg p-3">
                     <h5 className="font-medium text-gray-800">{empresa.nombre}</h5>
                     {empresa.beneficios.length > 0 ? (
                       <ul className="mt-2 space-y-1">
-                        {empresa.beneficios.map(beneficio => (
+                        {empresa.beneficios
+                          .slice()
+                          .sort(sortByNombre)
+                          .map(beneficio => (
                           <li key={beneficio.id} className="text-sm text-gray-600">
                             • {beneficio.nombre}: {beneficio.descripcion}
                           </li>
@@ -87,7 +100,10 @@ const VerPlanModal: React.FC<VerPlanModalProps> = ({ plan, onClose }) => {
               <div className="border-t border-gray-200 pt-4">
                 <h4 className="text-lg font-medium text-gray-800 mb-3">Promociones especiales</h4>
                 <div className="space-y-2">
-                  {plan.promociones.map(promocion => (
+                  {plan.promociones
+                    .slice()
+                    .sort(sortByTitulo)
+                    .map(promocion => (
                     <div key={promocion.id} className="border-l-4 border-blue-500 pl-3 py-1">
                       <h5 className="font-medium text-gray-800">{promocion.titulo}</h5>
                       <p className="text-sm text-gray-600">{promocion.descripcion}</p>
