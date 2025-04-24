@@ -282,7 +282,10 @@ const EditarPlanModal: React.FC<EditarPlanModalProps> = ({
                       exit={{ opacity: 0, height: 0 }}
                       className="mt-2 space-y-2 overflow-hidden"
                     >
-                      {empresas.map(empresa => (
+                      {empresas
+                      .slice()
+                      .sort((a, b) => a.nombre.localeCompare(b.nombre))
+                      .map(empresa => (
                         <div key={empresa.id} className="border rounded-md p-3">
                           <div className="flex items-center">
                             <input
@@ -348,7 +351,10 @@ const EditarPlanModal: React.FC<EditarPlanModalProps> = ({
                     exit={{ opacity: 0, height: 0 }}
                     className="space-y-2 overflow-hidden"
                   >
-                    {promocionesDisponibles.map(promocion => (
+                    {promocionesDisponibles
+                      .slice()
+                      .sort((a, b) => a.titulo.localeCompare(b.titulo))
+                      .map(promocion => (
                       <div key={promocion.id} className="border rounded-md p-3">
                         <div className="flex items-center">
                           <input
