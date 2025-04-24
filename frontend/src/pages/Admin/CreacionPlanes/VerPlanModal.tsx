@@ -12,12 +12,12 @@ const VerPlanModal: React.FC<VerPlanModalProps> = ({ plan, onClose }) => {
   if (!plan) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    
       <motion.div 
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 20 }}
-        className="bg-white rounded-lg shadow-xl w-full max-w-3xl max-h-[90vh] overflow-y-auto"
+        className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-[40%] bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto z-50"
       >
         <div className="p-6">
           <div className="flex justify-between items-center mb-4">
@@ -113,7 +113,7 @@ const VerPlanModal: React.FC<VerPlanModalProps> = ({ plan, onClose }) => {
           </div>
         </div>
       </motion.div>
-    </div>
+
   );
 };
 

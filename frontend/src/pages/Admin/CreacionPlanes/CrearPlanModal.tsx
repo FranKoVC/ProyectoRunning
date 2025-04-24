@@ -140,12 +140,12 @@ const CrearPlanModal: React.FC<CrearPlanModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+
       <motion.div 
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 20 }}
-        className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto"
+        className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-[40%] bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto z-50"
       >
         <div className="p-6">
           <div className="flex justify-between items-center mb-4">
@@ -262,7 +262,10 @@ const CrearPlanModal: React.FC<CrearPlanModalProps> = ({
                       exit={{ opacity: 0, height: 0 }}
                       className="mt-2 space-y-2 overflow-hidden"
                     >
-                      {empresas.map(empresa => (
+                      {empresas
+                        .slice() // Crear una copia para no mutar el array original
+                        .sort((a, b) => a.nombre.localeCompare(b.nombre)) // Ordenar alfabéticamente
+                        .map(empresa => (
                         <div key={empresa.id} className="border rounded-md p-3">
                           <div className="flex items-center">
                             <input
@@ -281,7 +284,10 @@ const CrearPlanModal: React.FC<CrearPlanModalProps> = ({
                             <div className="mt-2 ml-6 space-y-2">
                               <h4 className="text-sm font-medium text-gray-600">Beneficios Activos:</h4>
                               {getActiveBenefitsForEmpresa(empresa.id).length > 0 ? (
-                                getActiveBenefitsForEmpresa(empresa.id).map(beneficio => (
+                                getActiveBenefitsForEmpresa(empresa.id)
+                                .slice()
+                                .sort((a, b) => a.nombre.localeCompare(b.nombre))
+                                .map(beneficio => (
                                   <div key={beneficio.id} className="flex items-center">
                                     <input
                                       type="checkbox"
@@ -328,7 +334,10 @@ const CrearPlanModal: React.FC<CrearPlanModalProps> = ({
                     exit={{ opacity: 0, height: 0 }}
                     className="space-y-2 overflow-hidden"
                   >
-                    {promocionesDisponibles.map(promocion => (
+                    {promocionesDisponibles
+                      .slice()
+                      .sort((a, b) => a.titulo.localeCompare(b.titulo))
+                      .map(promocion => (
                       <div key={promocion.id} className="border rounded-md p-3">
                         <div className="flex items-center">
                           <input
@@ -380,7 +389,6 @@ const CrearPlanModal: React.FC<CrearPlanModalProps> = ({
           </form>
         </div>
       </motion.div>
-    </div>
   );
 };
 

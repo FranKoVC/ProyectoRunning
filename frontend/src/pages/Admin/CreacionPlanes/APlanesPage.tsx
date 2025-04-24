@@ -312,48 +312,39 @@ const APlanesPage: React.FC = () => {
       </div>
       <Footer />
 
-      {/* Modales - Ahora son overlays dentro del mismo contenedor */}
-    <AnimatePresence>
-      {showCrearModal && (
-        <div className="fixed inset-0 z-50">
-          <div className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm"></div>
-          <CrearPlanModal
-            isOpen={showCrearModal}
-            onClose={() => setShowCrearModal(false)}
-            onPlanCreated={handleCreatePlan}
-            empresas={empresas}
-            promocionesDisponibles={promocionesDisponibles}
-          />
-        </div>
-      )}
-    </AnimatePresence>
+     {/* Modales */}
+<AnimatePresence>
+  {showCrearModal && (
+    <CrearPlanModal
+      isOpen={showCrearModal}
+      onClose={() => setShowCrearModal(false)}
+      onPlanCreated={handleCreatePlan}
+      empresas={empresas}
+      promocionesDisponibles={promocionesDisponibles}
+    />
+  )}
+</AnimatePresence>
 
-    <AnimatePresence>
-      {planToView && (
-        <div className="fixed inset-0 z-50">
-          <div className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm"></div>
-          <VerPlanModal
-            plan={planToView}
-            onClose={() => setPlanToView(null)}
-          />
-        </div>
-      )}
-    </AnimatePresence>
+<AnimatePresence>
+  {planToView && (
+    <VerPlanModal
+      plan={planToView}
+      onClose={() => setPlanToView(null)}
+    />
+  )}
+</AnimatePresence>
 
-    <AnimatePresence>
-      {planToEdit && (
-        <div className="fixed inset-0 z-50">
-          <div className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm"></div>
-          <EditarPlanModal
-            plan={planToEdit}
-            onClose={() => setPlanToEdit(null)}
-            onPlanUpdated={handleUpdatePlan}
-            empresas={empresas}
-            promocionesDisponibles={promocionesDisponibles}
-          />
-        </div>
-      )}
-    </AnimatePresence>
+<AnimatePresence>
+  {planToEdit && (
+    <EditarPlanModal
+      plan={planToEdit}
+      onClose={() => setPlanToEdit(null)}
+      onPlanUpdated={handleUpdatePlan}
+      empresas={empresas}
+      promocionesDisponibles={promocionesDisponibles}
+    />
+  )}
+</AnimatePresence>
     </>
   );
 };
