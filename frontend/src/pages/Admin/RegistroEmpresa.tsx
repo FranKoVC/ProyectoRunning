@@ -6,25 +6,27 @@ import Footer from "../../components/Footer";
 import acuerdoImg from "../../images/acuerdo.jpeg";
 
 interface FormData {
-    ruc: string;
+    ruc: string;                // Para empresa.ruc y usuario.contrasena
+    contacto: string;            // Para empresa.contacto y usuario.correo
     razonSocial: string;
-    contacto: string;
-    celular: string;
+    celular: string;             // Para usuario.celular
     vigenciaInicio: string;
     vigenciaFin: string;
     ciudad: string;
+    direccion: string;
     logoEmpresa: File | null;
 }
 
 const RegistroEmpresa = () => {
     const [formData, setFormData] = useState<FormData>({
         ruc: '',
-        razonSocial: '',
         contacto: '',
+        razonSocial: '',
         celular: '',
         vigenciaInicio: '',
         vigenciaFin: '',
         ciudad: '',
+        direccion: '',
         logoEmpresa: null,
     });
     
@@ -58,9 +60,19 @@ const RegistroEmpresa = () => {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        // Validaciones básicas
+        // Validaciones mejoradas
         if (!formData.logoEmpresa) {
             swal.fire("Error", "Debe subir un logo para la empresa", "error");
+            return;
+        }
+
+        if (!/^\d{9}$/.test(formData.ruc)) {
+            swal.fire("Error", "El RUC debe tener exactamente 9 dígitos", "error");
+            return;
+        }
+
+        if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(formData.contacto)) {
+            swal.fire("Error", "Ingrese un correo electrónico válido", "error");
             return;
         }
 
@@ -71,41 +83,53 @@ const RegistroEmpresa = () => {
 
         try {
             const formPayload = new FormData();
-            formPayload.append('ruc', formData.ruc);
-            formPayload.append('razonSocial', formData.razonSocial);
-            formPayload.append('contacto', formData.contacto);
+            // Campos para usuario
+            formPayload.append('ruc', formData.ruc);          // Será la contraseña
+            formPayload.append('contacto', formData.contacto); // Será el correo
             formPayload.append('celular', formData.celular);
+            
+            // Campos para empresa
+            formPayload.append('razonsocial', formData.razonSocial);
+            formPayload.append('ciudad', formData.ciudad);
+            formPayload.append('direccion', formData.direccion);
             formPayload.append('vigenciaInicio', formData.vigenciaInicio);
             formPayload.append('vigenciaFin', formData.vigenciaFin);
-            formPayload.append('ciudad', formData.ciudad);
+            
+            // Archivo (nombre debe coincidir con el esperado por NestJS)
             if (formData.logoEmpresa) {
-                formPayload.append('logo', formData.logoEmpresa);
+                formPayload.append('foto', formData.logoEmpresa);
             }
 
-            const response = await axios.post('http://localhost:8080/api/empresas/registro', formPayload, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
+            const response = await axios.post(
+                'http://localhost:3000/empresas/registro', 
+                formPayload,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
                 }
-            });
+            );
 
             if (response.status === 201) {
                 swal.fire("Éxito", "Empresa registrada exitosamente", "success");
                 setFormData({
                     ruc: '',
-                    razonSocial: '',
                     contacto: '',
+                    razonSocial: '',
                     celular: '',
                     vigenciaInicio: '',
                     vigenciaFin: '',
                     ciudad: '',
+                    direccion: '',
                     logoEmpresa: null,
                 });
                 setPreviewLogo(null);
                 if (formRef.current) formRef.current.reset();
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error('Error:', error);
-            swal.fire("Error", "Error al registrar la empresa", "error");
+            const errorMessage = error.response?.data?.message || "Error al registrar la empresa";
+            swal.fire("Error", errorMessage, "error");
         }
     };
 
@@ -156,10 +180,20 @@ const RegistroEmpresa = () => {
                                     className="w-full p-3 bg-white border border-white rounded-md"
                                     value={formData.ruc}
                                     onChange={handleChange}
+                                    pattern="\d{9}"
                                     required
-                                    minLength={11}
-                                    maxLength={11}
                                 />
+                                
+                                <input
+                                    type="email"
+                                    name="contacto"
+                                    placeholder="Correo electrónico"
+                                    className="w-full p-3 bg-white border border-white rounded-md"
+                                    value={formData.contacto}
+                                    onChange={handleChange}
+                                    required
+                                />
+                                
                                 <input
                                     type="text"
                                     name="razonSocial"
@@ -169,24 +203,27 @@ const RegistroEmpresa = () => {
                                     onChange={handleChange}
                                     required
                                 />
+                                
                                 <input
-                                    type="text"
-                                    name="contacto"
-                                    placeholder="Contacto"
-                                    className="w-full p-3 bg-white border border-white rounded-md"
-                                    value={formData.contacto}
-                                    onChange={handleChange}
-                                    required
-                                />
-                                <input
-                                    type="text"
+                                    type="tel"
                                     name="celular"
-                                    placeholder="Celular"
+                                    placeholder="Celular (Ej: +51 987654321)"
                                     className="w-full p-3 bg-white border border-white rounded-md"
                                     value={formData.celular}
                                     onChange={handleChange}
                                     required
                                 />
+                                
+                                <input
+                                    type="text"
+                                    name="direccion"
+                                    placeholder="Dirección"
+                                    className="w-full p-3 bg-white border border-white rounded-md"
+                                    value={formData.direccion}
+                                    onChange={handleChange}
+                                    required
+                                />
+
                                 <label className="text-[#922D26] font-medium">
                                     Vigencia del contrato
                                 </label>
@@ -209,6 +246,7 @@ const RegistroEmpresa = () => {
                                         required
                                     />
                                 </div>
+                                
                                 <input
                                     type="text"
                                     name="ciudad"
@@ -218,6 +256,7 @@ const RegistroEmpresa = () => {
                                     onChange={handleChange}
                                     required
                                 />
+
                                 <button
                                     type="submit"
                                     className="w-full bg-[#922D26] text-white py-3 rounded-md font-bold mt-4 hover:bg-[#7a2520]"
@@ -244,4 +283,3 @@ const RegistroEmpresa = () => {
 };
 
 export default RegistroEmpresa;
-

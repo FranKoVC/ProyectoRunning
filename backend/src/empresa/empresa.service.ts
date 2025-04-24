@@ -1,21 +1,28 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, QueryRunner } from 'typeorm';
 import { Empresa } from '../entities/Empresa';
 
 @Injectable()
 export class EmpresaService {
-    constructor(
-        @InjectRepository(Empresa)
-        private readonly empresaRepository: Repository<Empresa>,
-    ) {}
+  constructor(
+    @InjectRepository(Empresa)
+    private readonly empresaRepository: Repository<Empresa>,
+  ) {}
 
-    async create(empresa: Empresa): Promise<Empresa> {
-        const newEmpresa = this.empresaRepository.create(empresa);
-        return await this.empresaRepository.save(newEmpresa);
-    }
+  async create(
+    empresaData: Partial<Empresa>,
+    queryRunner?: QueryRunner
+  ): Promise<Empresa> {
+    const newEmpresa = this.empresaRepository.create(empresaData);
     
-    async findAll(): Promise<Empresa[]> {
-        return await this.empresaRepository.find();
+    if (queryRunner) {
+      return await queryRunner.manager.save(Empresa, newEmpresa);
     }
+    return await this.empresaRepository.save(newEmpresa);
+  }
+
+  async findAll(): Promise<Empresa[]> {
+    return await this.empresaRepository.find({ relations: ['idUsuario'] });
+  }
 }

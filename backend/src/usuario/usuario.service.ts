@@ -1,8 +1,9 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, QueryRunner } from 'typeorm';
 import { Usuario } from '../entities/Usuario';
 import { Rol } from '../entities/Rol';
+import { CreateUserDto } from '../dto/CreateUserDto';
 
 @Injectable()
 export class UsuarioService {
@@ -14,31 +15,51 @@ export class UsuarioService {
         private readonly rolRepository: Repository<Rol>
     ) {}
 
-    async createUser(correo: string, contrasena: string, idRol: number, celular: string, estado: string, foto: string): Promise<Usuario> {
-        // Validaciones básicas
-        if (!correo) throw new BadRequestException('El correo es requerido.');
-        if (!contrasena) throw new BadRequestException('La contraseña es requerida.');
-        if (!idRol) throw new BadRequestException('El rol es requerido.');
+    async createUser(
+        createUserDto: CreateUserDto,
+        queryRunner?: QueryRunner
+    ): Promise<Usuario> {
+        // Valores por defecto
+        const { 
+            estado = 'activo',
+            foto = 'default.jpg',
+            ...rest 
+        } = createUserDto;
 
-        // Verificar si el usuario ya existe
-        const existingUser = await this.usuarioRepository.findOne({ where: { correo } });
-        if (existingUser) throw new BadRequestException('El correo ya está registrado.');
+        // Validar campos obligatorios
+        if (!rest.correo || !rest.contrasena || !rest.idRol || !rest.celular) {
+            throw new BadRequestException('Campos requeridos: correo, contrasena, idRol, celular');
+        }
 
-        // Verificar si el rol existe
-        const rol = await this.rolRepository.findOne({ where: { idRol } });
-        if (!rol) throw new BadRequestException('El rol especificado no existe.');
+        // Verificar usuario existente
+        const existingUser = await this.usuarioRepository.findOne({ 
+            where: { correo: rest.correo } 
+        });
+        if (existingUser) {
+            throw new BadRequestException('El correo ya está registrado');
+        }
 
-        // Crear usuario
+        // Validar rol
+        const rol = await this.rolRepository.findOne({ 
+            where: { idRol: rest.idRol } 
+        });
+        if (!rol) {
+            throw new BadRequestException('Rol no válido');
+        }
+
+        // Crear entidad
         const newUsuario = this.usuarioRepository.create({
-            correo,
-            contrasena,
-            celular,
+            ...rest,
+            estado,
             foto,
             fechaCreacion: new Date(),
-            estado,
             idRol: rol
         });
 
+        // Guardar con o sin transacción
+        if (queryRunner) {
+            return await queryRunner.manager.save(Usuario, newUsuario);
+        }
         return await this.usuarioRepository.save(newUsuario);
     }
     
@@ -47,7 +68,9 @@ export class UsuarioService {
     }
 
     async findByEmail(email: string): Promise<Usuario | null> {
-        return await this.usuarioRepository.findOne({ where: { correo: email },
-        relations: ['idRol'] });
+        return await this.usuarioRepository.findOne({ 
+            where: { correo: email },
+            relations: ['idRol'] 
+        });
     }
 }
